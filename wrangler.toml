@@ -1,6 +1,9 @@
 compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2025-04-02"
 
+name = "dbmodule"
+main = "build/worker.mjs"
+
 [[d1_databases]]
 binding = "DB" # available in your Worker on env.DB
 database_name = "prod-d1-tutorial"
