@@ -1,0 +1,7 @@
+build/
+node_modules/
+logs/
+package-lock.json
+
+# wrangler cli files to be ignored
+.wrangler/
