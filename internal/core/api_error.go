@@ -1,7 +1,7 @@
 package core
 
 import (
-	. "github.com/kodesettings/dbmodule/v2/internal/config"
+	"github.com/kodesettings/dbmodule/v2/internal/config"
 )
 
 type ApiError struct {
@@ -49,6 +49,7 @@ func (a *ApiError) handle(err ApiError, headers HeaderFields) func() {
 		return a.response.InternalErrorResponse(a.message);
 	}
 	}
+	return nil
 }
 
 func (a *ApiError) AuthFailureError(headers HeaderFields) func() {

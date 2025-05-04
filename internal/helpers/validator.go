@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	BadRequestResponse "github.com/kodesettings/dbmodule/v2/internal/core"
+	"github.com/kodesettings/dbmodule/v2/internal/core"
 	"github.com/goccy/go-json"
 	"github.com/kaptinlin/jsonschema"
 )
@@ -34,7 +34,7 @@ func validator(schema string, validationSource string, jsonText string, __execut
 		output_schema, err := compiler.Compile([]byte(schema))
 		if err != nil {
 			details := fmt.Sprint("Failed to compile schema: %v", err);
-			return BadRequestResponse(details).send();
+			return BadRequestResponse(details);
 		}
 
 		instance := map[string]interface{}{
@@ -44,7 +44,7 @@ func validator(schema string, validationSource string, jsonText string, __execut
 		result := output_schema.Validate(instance)
 		if !result.IsValid() {
 			details, _ := json.MarshalIndent(result.ToList(), "", "  ");
-			return BadRequestResponse(details).send();
+			return BadRequestResponse(details);
 		}
 
 		return func() { __execute(); }
