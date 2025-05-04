@@ -23,12 +23,12 @@ type RefreshToken struct {
 	email                   string  `json:"email"`
 	password                string  `json:"password"`
 	isEmailVerified         bool    `json:"isEmailVerified"`
-	roles                   []Roles `json:"roles"`
+	roles                   []Role  `json:"roles"`
 	createdAt               uint64  `json:"createdAt"`
 	updatedAt               uint64  `json:"updatedAt"`
 }
 
-type Roles struct {
+type Role struct {
 	_id                     uint64  `json:"id"`
 	role                    string  `json:"role"`
 }
