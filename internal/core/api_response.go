@@ -1,9 +1,6 @@
 package core
 
-import (
-	"fmt"
-	. "github.com/kodesettings/dbmodule/v2/internal/config"
-)
+import "fmt"
 
 type ApiResponse struct {
 	statusCode string
@@ -31,12 +28,12 @@ const (
 )
 
 const (
-	SUCCESS ResponseStatus= 200
-	BAD_REQUEST ResponseStatus = 400
-	UNAUTHORIZED ResponseStatus = 401
-	FORBIDDEN ResponseStatus = 403
-	NOT_FOUND ResponseStatus = 404
-	INTERNAL_ERROR ResponseStatus  = 500
+	HTTP_SUCCESS ResponseStatus= 200
+	HTTP_BAD_REQUEST ResponseStatus = 400
+	HTTP_UNAUTHORIZED ResponseStatus = 401
+	HTTP_FORBIDDEN ResponseStatus = 403
+	HTTP_NOT_FOUND ResponseStatus = 404
+	HTTP_INTERNAL_ERROR ResponseStatus  = 500
 )
 
 /*
@@ -54,57 +51,58 @@ abstract class ApiResponse {
 }
 */
 
-func (a *ApiResponse) ApiResponseBuilder(apiResponse ApiResponse, headers HeaderFields) string {
+func (a *ApiResponse) send(apiResponse ApiResponse, headers HeaderFields) string {
 	prepare := func(apiResponse ApiResponse) string {
 		options := fmt.Sprint("{\"status\": \"%d\", \"statusText:\", \"%s\", \"headers:\" \"%s\"}",
 			apiResponse.status, apiResponse.message, apiResponse.headers)
 		return options
 	}
 
+	// TODO: add send routine
 	return prepare(*a)
 }
 
 func (a *ApiResponse) AuthFailureResponse(message string) func() {
 	if (message == "") { a.message = "Authentication Failure" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
-	a.status = UNAUTHORIZED
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_UNAUTHORIZED
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) NotFoundResponse(message string) func() {
 	if (message == "") { a.message = "Not Found" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
-	a.status = NOT_FOUND
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_NOT_FOUND
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) ForbiddenResponse(message string) func() {
 	if (message == "") { a.message = "Forbidden" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
-	a.status = FORBIDDEN
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_FORBIDDEN
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) BadRequestResponse(message string) func() {
 	if (message == "") { a.message = "Bad Parameters" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
-	a.status = BAD_REQUEST
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_BAD_REQUEST
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) InternalErrorResponse(message string) func() {
 	if (message == "") { a.message = "Internal Error" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
-	a.status = INTERNAL_ERROR
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_INTERNAL_ERROR
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) SuccessResponse(data any) func() {
 	a.message = "Success"
 	a.data = data
 	a.statusCode = StatusCode[STATUS_SUCCESS]
-	a.status = SUCCESS
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_SUCCESS
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) AccessTokenErrorResponse(data any) func() {
@@ -114,13 +112,13 @@ func (a *ApiResponse) AccessTokenErrorResponse(data any) func() {
 	a.headers["instruction"] = instruction
 
 	a.statusCode = StatusCode[STATUS_INVALID_ACCESS_TOKEN]
-	a.status = UNAUTHORIZED
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_UNAUTHORIZED
+	return func() { a.send(*a, a.headers) }
 }
 
 func (a *ApiResponse) TokenRefreshResponse(accessToken string, refreshToken string) func() {
 	a.message = "Access token invalid"
 	a.statusCode = StatusCode[STATUS_SUCCESS]
-	a.status = SUCCESS
-	return func() { a.ApiResponseBuilder(*a, a.headers) }
+	a.status = HTTP_SUCCESS
+	return func() { a.send(*a, a.headers) }
 }

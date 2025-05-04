@@ -6,7 +6,7 @@ import (
 
 	BadRequestResponse "github.com/kodesettings/dbmodule/v2/internal/core"
 	"github.com/goccy/go-json"
-   	"github.com/kaptinlin/jsonschema"
+	"github.com/kaptinlin/jsonschema"
 )
 
 const (
