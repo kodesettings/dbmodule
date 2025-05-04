@@ -6,6 +6,7 @@ Here are the applied changes that were done during the development cycles.
 
 - Added new required configurations for cloudflare workers deployments
 - Re-implemented all logic and sources from reference repository in Go language
+- Added smtp email handling service for cloudflare's email service
 
 ## Earlier history before language transition
 
