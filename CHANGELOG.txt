@@ -1,16 +1,16 @@
 ## ChangeLog
-
+=============================================================================
 Here are the applied changes that were done during the development cycles.
 
-### Repository version 0.1.4
+>>> Repository version 0.1.4
 
 - Added new required configurations for cloudflare workers deployments
 - Re-implemented all logic and sources from reference repository in Go language
 - Added smtp email handling service for cloudflare's email service
 
-## Earlier history before language transition
+!! Earlier history before language transition
 
-### Repository version 0.1.3
+<<< Repository version 0.1.3
 
 - Refactored database repository handlers and fixed most of the data structures
 - Updated bcrypt to bcryptjs due to compatibility issues with dependencies
@@ -19,7 +19,7 @@ Here are the applied changes that were done during the development cycles.
 - Removed mimetext dependency and using plain text for email body constuction
 - Added vitest modules for unit testing against cloudflare workers fetch API
 
-### Repository version 0.1.2
+<<< Repository version 0.1.2
 
 - Refactored controllers to use native nodejs API instead of express
 - Fixed typos in the project and in project file names from original author
@@ -30,7 +30,7 @@ Here are the applied changes that were done during the development cycles.
 - Removed redis cache implementation in favor of cloudflare workers kv
 - Updated database implementation to use cloudflare d1 instead of mongodb
 
-### Repository version being imported and modified from original GitHub
+<<< Repository version being imported and modified from original GitHub
 
 - Project was now refactored to use package @tsndr/cloudflare-worker-router
 - Docker and Express.js was removed from support, following Redis and MongoDB.
