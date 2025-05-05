@@ -8,11 +8,11 @@ import (
 	database_model "github.com/kodesettings/dbmodule/v2/internal/database/model"
 )
 
-type refresh_token_handler struct {
+type RefreshTokenHandler struct {
 	db *sql.DB
 }
 
-func (h *refresh_token_handler) FindAll() []database_model.RefreshToken {
+func (h *RefreshTokenHandler) FindAll() []database_model.RefreshToken {
 	rows, err := h.db.Query("SELECT * FROM refresh_token ORDER BY created_at DESC;")
 	if err != nil {
 		return []database_model.RefreshToken{}
@@ -33,7 +33,7 @@ func (h *refresh_token_handler) FindAll() []database_model.RefreshToken {
 	return refresh_tokens
 }
 
-func (h *refresh_token_handler) Create(refresh_token database_model.RefreshToken) bool {
+func (h *RefreshTokenHandler) Create(refresh_token database_model.RefreshToken) bool {
 	now := time.Now().Unix()
 	refresh_token.CreatedAt = uint64(now);
 	refresh_token.ExpiresAt = uint64(now); // TODO: add validity period
@@ -49,7 +49,7 @@ func (h *refresh_token_handler) Create(refresh_token database_model.RefreshToken
 }
 
 
-func (h *refresh_token_handler) Update(refresh_token database_model.RefreshToken) bool {
+func (h *RefreshTokenHandler) Update(refresh_token database_model.RefreshToken) bool {
 	_, err := h.db.Exec("UPDATE refresh_token SET (user = ?, token = ?, " +
 						"deviceIdentifier = ?) WHERE Id = ?;",
 						refresh_token.User, refresh_token.Token,
@@ -62,7 +62,7 @@ func (h *refresh_token_handler) Update(refresh_token database_model.RefreshToken
 	return true;
 }
 
-func (h *refresh_token_handler) Remove(refresh_token database_model.RefreshToken) bool {
+func (h *RefreshTokenHandler) Remove(refresh_token database_model.RefreshToken) bool {
 	_, err := h.db.Exec("DELETE FROM refresh_token WHERE Id = ?;", refresh_token.Id)
 	if err != nil {
 		return false;
@@ -71,7 +71,7 @@ func (h *refresh_token_handler) Remove(refresh_token database_model.RefreshToken
 	return true;
 }
 
-func (h *refresh_token_handler) FindById(id uint64) database_model.RefreshToken {
+func (h *RefreshTokenHandler) FindById(id uint64) database_model.RefreshToken {
 	row := h.db.QueryRow("SELECT * FROM refresh_token WHERE Id = ?;", id)
 
 	refresh_token := database_model.RefreshToken{}
@@ -84,7 +84,7 @@ func (h *refresh_token_handler) FindById(id uint64) database_model.RefreshToken 
 	return refresh_token;
 }
 
-func (h *refresh_token_handler) FindByDeviceIdentifier(deviceIdentifier string) database_model.RefreshToken {
+func (h *RefreshTokenHandler) FindByDeviceIdentifier(deviceIdentifier string) database_model.RefreshToken {
 	row := h.db.QueryRow("SELECT * FROM refresh_token WHERE deviceIdentifier = ?;", deviceIdentifier)
 
 	refresh_token := database_model.RefreshToken{}
