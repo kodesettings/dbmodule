@@ -1,7 +1,8 @@
+//go:build js && wasm
 package config
 
 import (
-	"github.com/syumai/workers"
+	_ "github.com/syumai/workers"
 	"github.com/syumai/workers/cloudflare"
 )
 

@@ -1,7 +1,8 @@
+//go:build js && wasm
 package core
 
 import (
-	"github.com/kodesettings/dbmodule/v2/internal/config"
+	_ "github.com/kodesettings/dbmodule/v2/internal/config"
 )
 
 type ApiError struct {
@@ -45,7 +46,7 @@ func (a *ApiError) handle(err ApiError, headers HeaderFields) func() {
 		return a.response.ForbiddenResponse(a.message);
 	default: {
 		// Do not send failure message in production as it may send sensitive data
-		if (environment == "production") { a.message = "Something wrong happened."; }
+		// if (environment == "production") { a.message = "Something wrong happened."; }
 		return a.response.InternalErrorResponse(a.message);
 	}
 	}
