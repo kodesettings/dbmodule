@@ -6,9 +6,10 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"io"
 	"fmt"
-	. "github.com/kodesettings/dbmodule/v2/internal/core"
+	. "github.com/kodesettings/dbmodule/v2/internal/config"
 )
 
 type RefreshToken struct {
@@ -22,7 +23,7 @@ type RefreshToken struct {
 
 // https://aran.dev/posts/using-golang-crypto-aes-and-crypto-cipher-packages/
 func encrypt(value string) (string, error) {
-	block, err := aes.NewCipher([]byte(tokenInfo.jwtSecret))
+	block, err := aes.NewCipher([]byte(TokenInfo[JwtSecret]))
 	if err != nil {
 		return "", err
 	}
@@ -49,7 +50,7 @@ func decrypt(value string) (string, error) {
 		return "", fmt.Errorf("decoding base64: %w", err)
 	}
 
-	block, err := aes.NewCipher([]byte(tokenInfo.jwtSecret))
+	block, err := aes.NewCipher([]byte(TokenInfo[JwtSecret]))
 	if err != nil {
 		return "", err
 	}
