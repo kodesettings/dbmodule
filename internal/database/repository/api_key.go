@@ -8,11 +8,11 @@ import (
 	database_model "github.com/kodesettings/dbmodule/v2/internal/database/model"
 )
 
-type api_key_handler struct {
+type ApiKeyHandler struct {
 	db *sql.DB
 }
 
-func (h *api_key_handler) FindAll() []database_model.ApiKey {
+func (h *ApiKeyHandler) FindAll() []database_model.ApiKey {
 	rows, err := h.db.Query("SELECT * FROM api_key ORDER BY created_at DESC;")
 	if err != nil {
 		return []database_model.ApiKey{}
@@ -31,7 +31,7 @@ func (h *api_key_handler) FindAll() []database_model.ApiKey {
 	return api_keys
 }
 
-func (h *api_key_handler) Create(api_key database_model.ApiKey) bool {
+func (h *ApiKeyHandler) Create(api_key database_model.ApiKey) bool {
 	database_model.CreateSuperAdminApiKey();
 
 	now := time.Now().Unix()
@@ -48,7 +48,7 @@ func (h *api_key_handler) Create(api_key database_model.ApiKey) bool {
 }
 
 
-func (h *api_key_handler) Update(api_key database_model.ApiKey) bool {
+func (h *ApiKeyHandler) Update(api_key database_model.ApiKey) bool {
 	database_model.CreateSuperAdminApiKey();
 
 	now := time.Now().Unix()
@@ -63,7 +63,7 @@ func (h *api_key_handler) Update(api_key database_model.ApiKey) bool {
 	return true;
 }
 
-func (h *api_key_handler) Remove(api_key database_model.ApiKey) bool {
+func (h *ApiKeyHandler) Remove(api_key database_model.ApiKey) bool {
 	database_model.CreateSuperAdminApiKey();
 
 	_, err := h.db.Exec("DELETE FROM api_key WHERE Id = ?;", api_key.Id)
@@ -74,7 +74,7 @@ func (h *api_key_handler) Remove(api_key database_model.ApiKey) bool {
 	return true;
 }
 
-func (h *api_key_handler) FindById(id uint64) database_model.ApiKey {
+func (h *ApiKeyHandler) FindById(id uint64) database_model.ApiKey {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE Id = ?;", id)
@@ -88,7 +88,7 @@ func (h *api_key_handler) FindById(id uint64) database_model.ApiKey {
 	return api_key;
 }
 
-func (h *api_key_handler) FindByKey(key string) database_model.ApiKey {
+func (h *ApiKeyHandler) FindByKey(key string) database_model.ApiKey {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE Key = ?;", key)
@@ -102,7 +102,7 @@ func (h *api_key_handler) FindByKey(key string) database_model.ApiKey {
 	return api_key;
 }
 
-func (h *api_key_handler) FindByKeyButId(id uint64, key string) database_model.ApiKey {
+func (h *ApiKeyHandler) FindByKeyButId(id uint64, key string) database_model.ApiKey {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE (Id = ?, Key = ?);", id, key)

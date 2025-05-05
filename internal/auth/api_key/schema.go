@@ -1,4 +1,4 @@
-package auth_apikey
+package auth_api_key
 
 var schema string = `
 {
