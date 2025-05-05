@@ -1,3 +1,4 @@
+//go:build js && wasm
 package database_model
 
 const (
@@ -11,12 +12,14 @@ const (
 )
 
 type ApiKey struct {
-	_id          uint64 `json:"id"`
-	key          string `json:"key"`
-	permissions  string `json:"permissions"`
-	createdAt    uint64 `json:"createdAt"`
-	updatedAt    uint64 `json:"updatedAt"`
+	Id           uint64 `json:"id"`
+	Key          string `json:"key"`
+	Permissions  string `json:"permissions"`
+	CreatedAt    uint64 `json:"createdAt"`
+	UpdatedAt    uint64 `json:"updatedAt"`
 }
+
+func CreateSuperAdminApiKey() {}
 
 /*
 export async function createSuperAdminApiKey() {

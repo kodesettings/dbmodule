@@ -19,14 +19,14 @@ const (
 )
 
 type User struct {
-	_id                     uint64  `json:"id"`
-	fullname                string  `json:"fullname"`
-	email                   string  `json:"email"`
-	password                string  `json:"password"`
-	isEmailVerified         bool    `json:"isEmailVerified"`
-	roles                   []Role  `json:"roles"`
-	createdAt               uint64  `json:"createdAt"`
-	updatedAt               uint64  `json:"updatedAt"`
+	Id                      uint64  `json:"id"`
+	Fullname                string  `json:"fullname"`
+	Email                   string  `json:"email"`
+	Password                string  `json:"password"`
+	IsEmailVerified         bool    `json:"isEmailVerified"`
+	Roles                   []Role  `json:"roles"`
+	CreatedAt               uint64  `json:"createdAt"`
+	UpdatedAt               uint64  `json:"updatedAt"`
 }
 
 type Role struct {
@@ -36,11 +36,11 @@ type Role struct {
 
 // Hashing Password Before Saving the User
 func SavePassword(user User) User {
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.password), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c := ApiError{/*empty struct, it is assigned in function call*/}
 		c.InternalError(err.Error())
 	}
-	user.password = string(hash)
+	user.Password = string(hash)
 	return user
 }

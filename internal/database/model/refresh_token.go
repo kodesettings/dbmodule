@@ -13,12 +13,12 @@ import (
 )
 
 type RefreshToken struct {
-	_id                     uint64 `json:"id"`
-	user                    string `json:"user"`
-	token                   string `json:"token"`
-	deviceIdentifier        string `json:"deviceIdentifier"`
-	createdAt               uint64 `json:"createdAt"`
-	expiresAt               uint64 `json:"expiresAt"`
+	Id                      uint64 `json:"id"`
+	User                    string `json:"user"`
+	Token                   string `json:"token"`
+	DeviceIdentifier        string `json:"deviceIdentifier"`
+	CreatedAt               uint64 `json:"createdAt"`
+	ExpiresAt               uint64 `json:"expiresAt"`
 }
 
 // https://aran.dev/posts/using-golang-crypto-aes-and-crypto-cipher-packages/
