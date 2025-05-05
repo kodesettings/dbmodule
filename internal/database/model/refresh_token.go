@@ -1,3 +1,4 @@
+//go:build js && wasm
 package database_model
 
 import (

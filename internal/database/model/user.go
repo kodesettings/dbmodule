@@ -1,7 +1,8 @@
+//go:build js && wasm
 package database_model
 
 import (
-	. "golang.org/x/crypto/bcrypt"
+	bcrypt "golang.org/x/crypto/bcrypt"
 	. "github.com/kodesettings/dbmodule/v2/internal/core"
 )
 
@@ -17,7 +18,7 @@ const (
 	ROLE_MODERATOR = "superadmin"
 )
 
-type RefreshToken struct {
+type User struct {
 	_id                     uint64  `json:"id"`
 	fullname                string  `json:"fullname"`
 	email                   string  `json:"email"`
@@ -34,11 +35,12 @@ type Role struct {
 }
 
 // Hashing Password Before Saving the User
-func savePassword(user User) User {
-	hash, err := bcrypt.GenerateFromPassword(user.password, bcrypt.DefaultCost)
+func SavePassword(user User) User {
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.password), bcrypt.DefaultCost)
 	if err != nil {
-		return InternalError(err.message)
+		c := ApiError{/*empty struct, it is assigned in function call*/}
+		c.InternalError(err.Error())
 	}
-	user.password = hash
+	user.password = string(hash)
 	return user
 }

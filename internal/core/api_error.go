@@ -26,7 +26,7 @@ const (
 	ERR_CODE_FORBIDDEN
 )
 
-func (a *ApiError) handle(err ApiError, headers HeaderFields) func() {
+func (a *ApiError) handle(err ApiError, error_msg string) func() {
 	switch (err.errorType) {
 	case ERR_CODE_BAD_TOKEN:
 	case ERR_CODE_TOKEN_EXPIRED:
@@ -53,62 +53,62 @@ func (a *ApiError) handle(err ApiError, headers HeaderFields) func() {
 	return nil
 }
 
-func (a *ApiError) AuthFailureError(headers HeaderFields) func() {
+func (a *ApiError) AuthFailureError(error_msg string) func() {
 	a.message = "Invalid Credentials"
 	a.errorType = ERR_CODE_UNAUTHORIZED
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) InternalError(headers HeaderFields) func() {
+func (a *ApiError) InternalError(error_msg string) func() {
 	a.message = "Internal error"
 	a.errorType = ERR_CODE_INTERNAL_ERROR
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) BadRequestError(headers HeaderFields) func() {
+func (a *ApiError) BadRequestError(error_msg string) func() {
 	a.message = "Bad Request"
 	a.errorType = ERR_CODE_BAD_REQUEST
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) NotFoundError(headers HeaderFields) func() {
+func (a *ApiError) NotFoundError(error_msg string) func() {
 	a.message = "Not Found"
 	a.errorType = ERR_CODE_NOT_FOUND
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) ForbiddenError(headers HeaderFields) func() {
+func (a *ApiError) ForbiddenError(error_msg string) func() {
 	a.message = "Permission denied"
 	a.errorType = ERR_CODE_FORBIDDEN
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) NoEntryError(headers HeaderFields) func() {
+func (a *ApiError) NoEntryError(error_msg string) func() {
 	a.message = "Entry don't exists"
 	a.errorType = ERR_CODE_NO_ENTRY
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) BadTokenError(headers HeaderFields) func() {
+func (a *ApiError) BadTokenError(error_msg string) func() {
 	a.message = "Token is not valid"
 	a.errorType = ERR_CODE_BAD_TOKEN
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) TokenExpiredError(headers HeaderFields) func() {
+func (a *ApiError) TokenExpiredError(error_msg string) func() {
 	a.message = "Token is expired"
 	a.errorType = ERR_CODE_TOKEN_EXPIRED
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) NoDataError(headers HeaderFields) func() {
+func (a *ApiError) NoDataError(error_msg string) func() {
 	a.message = "No data available"
 	a.errorType = ERR_CODE_NO_DATA
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
 
-func (a *ApiError) AccessTokenError(headers HeaderFields) func() {
+func (a *ApiError) AccessTokenError(error_msg string) func() {
 	a.message = "Invalid access token"
 	a.errorType = ERR_CODE_INVALID_ACCESS_TOKEN
-	return func() { a.handle(*a, headers) }
+	return func() { a.handle(*a, error_msg) }
 }
