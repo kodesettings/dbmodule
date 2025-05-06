@@ -30,8 +30,8 @@ type User struct {
 }
 
 type Role struct {
-	_id                     uint64  `json:"id"`
-	role                    string  `json:"role"`
+	Id                      uint64  `json:"id"`
+	Role                    string  `json:"role"`
 }
 
 // Hashing Password Before Saving the User
