@@ -51,7 +51,7 @@ func (a *apikey) ApiKeyValidator(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	handler := database_repository.ApiKeyHandler{}
+	handler := database_repository.ApiKeyRepo{}
 	var apiKey database_model.ApiKey = handler.FindByKey(key);
 	if apiKey.Key == "" {
 		c := ApiError{/*empty struct, it is assigned in function call*/}

@@ -38,7 +38,7 @@ func (a *auth) AuthenticationValidator(w http.ResponseWriter, req *http.Request)
 
 	if decodedToken == "" { c := ApiError{}; c.BadRequestError("invalid tokn"); return; }
 
-	handler := database_repository.RefreshTokenHandler{}
+	handler := database_repository.RefreshTokenRepo{}
 	refreshToken := handler.FindByDeviceIdentifier(deviceIdentifier);
 	isUserLoggedIn := refreshToken.User != ""
 
