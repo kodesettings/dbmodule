@@ -2,19 +2,20 @@
 package database_model
 
 const (
-	GENERAL = "GENERAL"
-	SUPER_ADMIN = "SUPER_ADMIN"
+	PERMISSION_GENERAL = "GENERAL"
+	PERMISSION_SUPER_ADMIN = "SUPER_ADMIN"
 )
 
 const (
-	ACTIVE = 1
-	INACTIVE = 0
+	STATUS_ACTIVE = 1
+	STATUS_INACTIVE = 0
 )
 
 type ApiKey struct {
 	Id           uint64 `json:"id"`
 	Key          string `json:"key"`
 	Permissions  string `json:"permissions"`
+	Status       uint16 `json:"status"`
 	CreatedAt    uint64 `json:"createdAt"`
 	UpdatedAt    uint64 `json:"updatedAt"`
 }

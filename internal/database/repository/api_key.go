@@ -63,10 +63,10 @@ func (h *ApiKeyRepo) Update(api_key database_model.ApiKey) bool {
 	return true;
 }
 
-func (h *ApiKeyRepo) Remove(api_key database_model.ApiKey) bool {
+func (h *ApiKeyRepo) Remove(id uint64) bool {
 	database_model.CreateSuperAdminApiKey();
 
-	_, err := h.db.Exec("DELETE FROM api_key WHERE Id = ?;", api_key.Id)
+	_, err := h.db.Exec("DELETE FROM api_key WHERE Id = ?;", id)
 	if err != nil {
 		return false;
 	}

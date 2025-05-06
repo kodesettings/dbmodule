@@ -63,8 +63,8 @@ func (h *UserRepo) Update(user database_model.User) bool {
 	return true;
 }
 
-func (h *UserRepo) Remove(user database_model.User) bool {
-	_, err := h.db.Exec("DELETE FROM user WHERE Id = ?;", user.Id)
+func (h *UserRepo) Remove(id uint64) bool {
+	_, err := h.db.Exec("DELETE FROM user WHERE Id = ?;", id)
 	if err != nil {
 		return false;
 	}

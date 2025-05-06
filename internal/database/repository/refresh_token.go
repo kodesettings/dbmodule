@@ -62,8 +62,8 @@ func (h *RefreshTokenRepo) Update(refresh_token database_model.RefreshToken) boo
 	return true;
 }
 
-func (h *RefreshTokenRepo) Remove(refresh_token database_model.RefreshToken) bool {
-	_, err := h.db.Exec("DELETE FROM refresh_token WHERE Id = ?;", refresh_token.Id)
+func (h *RefreshTokenRepo) Remove(id uint64) bool {
+	_, err := h.db.Exec("DELETE FROM refresh_token WHERE Id = ?;", id)
 	if err != nil {
 		return false;
 	}
