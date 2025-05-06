@@ -74,7 +74,7 @@ func (h *ApiKeyRepo) Remove(api_key database_model.ApiKey) bool {
 	return true;
 }
 
-func (h *ApiKeyRepo) FindById(id uint64) database_model.ApiKey {
+func (h *ApiKeyRepo) FindById(id uint64) (database_model.ApiKey, bool) {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE Id = ?;", id)
@@ -82,13 +82,13 @@ func (h *ApiKeyRepo) FindById(id uint64) database_model.ApiKey {
 	api_key := database_model.ApiKey{}
 	if err := row.Scan(&api_key.Id, &api_key.Key, &api_key.Permissions,
 					&api_key.CreatedAt, &api_key.UpdatedAt); err != nil {
-		return database_model.ApiKey{}
+		return database_model.ApiKey{}, false;
 	}
 
-	return api_key;
+	return api_key, true;
 }
 
-func (h *ApiKeyRepo) FindByKey(key string) database_model.ApiKey {
+func (h *ApiKeyRepo) FindByKey(key string) (database_model.ApiKey, bool) {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE Key = ?;", key)
@@ -96,13 +96,13 @@ func (h *ApiKeyRepo) FindByKey(key string) database_model.ApiKey {
 	api_key := database_model.ApiKey{}
 	if err := row.Scan(&api_key.Id, &api_key.Key, &api_key.Permissions,
 					&api_key.CreatedAt, &api_key.UpdatedAt); err != nil {
-		return database_model.ApiKey{}
+		return database_model.ApiKey{}, false;
 	}
 
-	return api_key;
+	return api_key, true;
 }
 
-func (h *ApiKeyRepo) FindByKeyButId(id uint64, key string) database_model.ApiKey {
+func (h *ApiKeyRepo) FindByKeyButId(id uint64, key string) (database_model.ApiKey, bool) {
 	database_model.CreateSuperAdminApiKey();
 
 	row := h.db.QueryRow("SELECT * FROM api_key WHERE (Id = ?, Key = ?);", id, key)
@@ -110,8 +110,8 @@ func (h *ApiKeyRepo) FindByKeyButId(id uint64, key string) database_model.ApiKey
 	api_key := database_model.ApiKey{}
 	if err := row.Scan(&api_key.Id, &api_key.Key, &api_key.Permissions,
 				&api_key.CreatedAt, &api_key.UpdatedAt); err != nil {
-		return database_model.ApiKey{}
+		return database_model.ApiKey{}, false;
 	}
 
-	return api_key;
+	return api_key, true;
 }

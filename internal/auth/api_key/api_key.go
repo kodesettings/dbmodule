@@ -6,7 +6,6 @@ import (
 	"io"
 	"encoding/json"
 	. "github.com/kodesettings/dbmodule/v2/internal/core"
-	database_model "github.com/kodesettings/dbmodule/v2/internal/database/model"
 	database_repository "github.com/kodesettings/dbmodule/v2/internal/database/repository"
 )
 
@@ -52,8 +51,8 @@ func (a *apikey) ApiKeyValidator(w http.ResponseWriter, req *http.Request) {
 	}
 
 	handler := database_repository.ApiKeyRepo{}
-	var apiKey database_model.ApiKey = handler.FindByKey(key);
-	if apiKey.Key == "" {
+	_, found := handler.FindByKey(key);
+	if !found {
 		c := ApiError{/*empty struct, it is assigned in function call*/}
 		c.ForbiddenError("no api key was found")
 		return

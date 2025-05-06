@@ -32,8 +32,8 @@ func (a *auth) AuthorizationValidator(w http.ResponseWriter, req *http.Request) 
 	var userId uint64 = a.__getUserId(req);
 
 	handler := database_repository.UserRepo{}
-	var user database_model.User = handler.FindById(userId);
-	if user.Id == 0 {
+	user, found := handler.FindById(userId);
+	if !found {
 		c := ApiError{/*empty struct, it is assigned in function call*/}
 		c.ForbiddenError("cannot find user id")
 		return

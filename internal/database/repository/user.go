@@ -72,28 +72,28 @@ func (h *UserRepo) Remove(user database_model.User) bool {
 	return true;
 }
 
-func (h *UserRepo) FindById(id uint64) database_model.User {
+func (h *UserRepo) FindById(id uint64) (database_model.User, bool) {
 	row := h.db.QueryRow("SELECT * FROM user WHERE Id = ?;", id)
 
 	user := database_model.User{}
 	if err := row.Scan(&user.Id, &user.Fullname, &user.Email, &user.Password,
 					&user.IsEmailVerified, &user.Roles, &user.CreatedAt,
 					&user.UpdatedAt); err != nil {
-		return database_model.User{}
+		return database_model.User{}, false;
 	}
 
-	return user;
+	return user, true;
 }
 
-func (h *UserRepo) FindByEmail(email string) database_model.User {
+func (h *UserRepo) FindByEmail(email string) (database_model.User, bool) {
 	row := h.db.QueryRow("SELECT * FROM user WHERE Email = ?;", email)
 
 	user := database_model.User{}
 	if err := row.Scan(&user.Id, &user.Fullname, &user.Email, &user.Password,
 					&user.IsEmailVerified, &user.Roles, &user.CreatedAt,
 					&user.UpdatedAt); err != nil {
-		return database_model.User{}
+		return database_model.User{}, false;
 	}
 
-	return user;
+	return user, true;
 }
