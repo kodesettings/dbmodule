@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func mail_content_builder(email_r string, fullname_r string, email_s string, fullname_s string, subject string, body string) string {
+func MimeTextBuilder(email_r string, fullname_r string, email_s string, fullname_s string, subject string, body string) string {
 	var email_sender,email_recipient, email_subject, email_body string = "", "", "", "";
 
 	email_sender = strings.Join([]string{"From: ", fullname_s, " <", email_s, ">\n"}, "")
