@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kodesettings/dbmodule/v2/internal/core"
+	. "github.com/kodesettings/dbmodule/v2/internal/core"
 	"github.com/goccy/go-json"
 	"github.com/kaptinlin/jsonschema"
 )
@@ -17,12 +17,12 @@ const (
 	PARAM = "params"
 )
 
-func validateUrlEndpoint(value string) string {
+func ValidateUrlEndpoint(value string) string {
 	if (strings.Contains(value, "://")) { return "malformed URL"; }
 	return value;
 }
 
-func validateAuthBearerToken(value string) string {
+func ValidateAuthBearerToken(value string) string {
 	if (!strings.HasPrefix(value, "Bearer ")) { return "invalid Bearer token"; }
 	if (strings.Split(value, " ")[1] == "") { return "invalid Bearer token"; }
 	return value;
@@ -30,12 +30,13 @@ func validateAuthBearerToken(value string) string {
 
 const draft string = "2019-09" // json schema draft
 
-func validator(schema string, validationSource string, jsonText string, __execute func()) any {
+func Validator(schema string, validationSource string, jsonText string, __execute func()) any {
 		compiler := jsonschema.NewCompiler()
 		output_schema, err := compiler.Compile([]byte(schema))
 		if err != nil {
+			r := ApiResponse{/*empty struct, it is assigned in function call*/}
 			details := fmt.Sprint("Failed to compile schema: %v", err);
-			return BadRequestResponse(details);
+			return r.BadRequestResponse(details);
 		}
 
 		instance := map[string]interface{}{
@@ -44,8 +45,9 @@ func validator(schema string, validationSource string, jsonText string, __execut
 		}
 		result := output_schema.Validate(instance)
 		if !result.IsValid() {
+			r := ApiResponse{/*empty struct, it is assigned in function call*/}
 			details, _ := json.MarshalIndent(result.ToList(), "", "  ");
-			return BadRequestResponse(details);
+			return r.BadRequestResponse(string(details));
 		}
 
 		return func() { __execute(); }
