@@ -42,7 +42,7 @@ func (a *apikey) SuperAdminApiKeyCheck(w http.ResponseWriter, req *http.Request)
 	}
 }
 
-func (a *apikey) ApiKeyValidator(w http.ResponseWriter, req *http.Request) {
+func (a *apikey) ApiKeyCheck(w http.ResponseWriter, req *http.Request) {
 	key := req.Header.Get("x-api-key")
 	if key == "" {
 		c := ApiError{/*empty struct, it is assigned in function call*/}
