@@ -17,7 +17,7 @@ import (
 	database_repository "github.com/kodesettings/dbmodule/v2/internal/database/repository"
 )
 
-type identifiers struct {
+type user_identifiers struct {
 	username         string `json:"username"`
 	email            string `json:"email"`
 	password         string `json:"password"`
@@ -51,7 +51,7 @@ func (c *controller) __parse_json_model(req *http.Request, user *database_model.
 	json.Unmarshal([]byte(b), &user)
 }
 
-func (c *controller) __parse_json_id(req *http.Request, id *identifiers) {
+func (c *controller) __parse_json_id(req *http.Request, id *user_identifiers) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -97,7 +97,7 @@ func (c *controller) __verifyJWTToken(token_string string) bool {
 
 // POST - /auth/login - Login Handler
 func (c *controller) Login(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	user, found := c.user_handler.FindByEmail(__id.email);
@@ -148,7 +148,7 @@ func (c *controller) Login(w http.ResponseWriter, req *http.Request) {
 
 // POST - /auth/register - Register Handler
 func (c *controller) Register(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	user, found := c.user_handler.FindByEmail(__id.email);
@@ -204,7 +204,7 @@ func (c *controller) NewAccessToken(w http.ResponseWriter, req *http.Request) {
 
 // POST - /auth/verify-email-request - Emails a link that verifies the email
 func (c *controller) VerifyEmailRequest(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	user, found := c.user_handler.FindByEmail(__id.email);
@@ -228,7 +228,7 @@ func (c *controller) VerifyEmailRequest(w http.ResponseWriter, req *http.Request
 
 // GET - /auth/verify-email/:token - Verifies user's email
 func (c *controller) VerifyEmail(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	success := c.__verifyJWTToken(__id.token);
@@ -250,7 +250,7 @@ func (c *controller) VerifyEmail(w http.ResponseWriter, req *http.Request) {
 
 // POST - /auth/forget-password - Forget Password Handler
 func (c *controller) ForgetPassword(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	user, found := c.user_handler.FindByEmail(__id.email);
@@ -269,7 +269,7 @@ func (c *controller) ForgetPassword(w http.ResponseWriter, req *http.Request) {
 
 // POST - /reset-password/:token - Reset Password Handler
 func (c *controller) ResetForgettedPassword(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	success := c.__verifyJWTToken(__id.token);
@@ -291,7 +291,7 @@ func (c *controller) ResetForgettedPassword(w http.ResponseWriter, req *http.Req
 
 // PUT - /change-password/:id - Change Password Handler
 func (c *controller) ChangePassword(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	user, found := c.user_handler.FindByEmail(__id.email);

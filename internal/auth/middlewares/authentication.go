@@ -8,7 +8,7 @@ import (
 	database_repository "github.com/kodesettings/dbmodule/v2/internal/database/repository"
 )
 
-type auth struct {
+type authentication struct {
 	authentication _authentication `json:"auth"`
 }
 
@@ -16,7 +16,7 @@ type _authentication struct {
 	device_identifier string `json:"deviceIdentifier"`
 }
 
-func (a *auth) __decodeJWTToken(token_string string) string {
+func (a *authentication) __decodeJWTToken(token_string string) string {
 	_, err := jwt.Parse(token_string, func(token *jwt.Token) (interface{}, error) {
 		return token, nil
 	});
@@ -24,7 +24,7 @@ func (a *auth) __decodeJWTToken(token_string string) string {
 	return err.Error()
 }
 
-func (a *auth) AuthenticationValidator(w http.ResponseWriter, req *http.Request) {
+func (a *authentication) AuthenticationValidator(w http.ResponseWriter, req *http.Request) {
 	deviceIdentifier := req.Header.Get("deviceIdentifier")
 	authHeader := req.Header.Get("Authorization")
 	if authHeader == "" {

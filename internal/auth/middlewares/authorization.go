@@ -11,11 +11,11 @@ import (
 	database_repository "github.com/kodesettings/dbmodule/v2/internal/database/repository"
 )
 
-type auth struct {
+type authorization struct {
 	userId string `json:"userId"`
 }
 
-func (a *auth) __getUserId(req *http.Request) uint64 {
+func (a *authorization) __getUserId(req *http.Request) uint64 {
 	user := database_model.User{}
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
@@ -28,7 +28,7 @@ func (a *auth) __getUserId(req *http.Request) uint64 {
 	return user.Id
 }
 
-func (a *auth) AuthorizationValidator(w http.ResponseWriter, req *http.Request) {
+func (a *authorization) AuthorizationValidator(w http.ResponseWriter, req *http.Request) {
 	var userId uint64 = a.__getUserId(req);
 
 	handler := database_repository.UserRepo{}

@@ -11,7 +11,7 @@ import (
 	database_repository "github.com/kodesettings/dbmodule/v2/internal/database/repository"
 )
 
-type identifiers struct {
+type ak_identifiers struct {
 	id     uint64 `json:"id"`
 	key    string `json:"key"`
 	status uint16 `json:"status"`
@@ -33,7 +33,7 @@ func (c *controller) __parse_json_model(req *http.Request, apiKey *database_mode
 	json.Unmarshal([]byte(b), &apiKey)
 }
 
-func (c *controller) __parse_json_id(req *http.Request, id *identifiers) {
+func (c *controller) __parse_json_id(req *http.Request, id *ak_identifiers) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -77,7 +77,7 @@ func (c *controller) Create(w http.ResponseWriter, req *http.Request) {
 
 // PUT - /apikey/update
 func (c *controller) Update(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	apiKey, found := c.handler.FindById(__id.id);
@@ -108,7 +108,7 @@ func (c *controller) Update(w http.ResponseWriter, req *http.Request) {
 
 // DELETE - /apikey/remove
 func (c *controller) Remove(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	_, found := c.handler.FindById(__id.id);
@@ -125,7 +125,7 @@ func (c *controller) Remove(w http.ResponseWriter, req *http.Request) {
 
 // GET - /apikey/find-by-id
 func (c *controller) FindById(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	apiKey, found := c.handler.FindById(__id.id);
@@ -136,7 +136,7 @@ func (c *controller) FindById(w http.ResponseWriter, req *http.Request) {
 
 // GET - /apikey/find-by-id
 func (c *controller) FindByKey(w http.ResponseWriter, req *http.Request) {
-	var __id identifiers;
+	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
 	apiKey, found := c.handler.FindByKey(__id.key);
