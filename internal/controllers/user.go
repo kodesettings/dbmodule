@@ -34,14 +34,14 @@ type jwt_claims struct {
     jwt.RegisteredClaims
 }
 
-type controller struct {
+type user_controller struct {
 	api_error ApiError;
 	api_response ApiResponse;
 	handler database_repository.RefreshTokenRepo
 	user_handler database_repository.UserRepo
 }
 
-func (c *controller) __parse_json_model(req *http.Request, user *database_model.User) {
+func (c *user_controller) __parse_json_model(req *http.Request, user *database_model.User) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -51,7 +51,7 @@ func (c *controller) __parse_json_model(req *http.Request, user *database_model.
 	json.Unmarshal([]byte(b), &user)
 }
 
-func (c *controller) __parse_json_id(req *http.Request, id *user_identifiers) {
+func (c *user_controller) __parse_json_id(req *http.Request, id *user_identifiers) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -61,7 +61,7 @@ func (c *controller) __parse_json_id(req *http.Request, id *user_identifiers) {
 	json.Unmarshal([]byte(b), &id)
 }
 
-func (c *controller) __sign_jwt_token(username string, usage string) string {
+func (c *user_controller) __sign_jwt_token(username string, usage string) string {
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 		"usage": usage,
@@ -77,7 +77,7 @@ func (c *controller) __sign_jwt_token(username string, usage string) string {
 	return tokenString
 }
 
-func (c *controller) __decodeJWTToken(token_string string) string {
+func (c *user_controller) __decodeJWTToken(token_string string) string {
 	_, err := jwt.Parse(token_string, func(token *jwt.Token) (interface{}, error) {
 		return token, nil
 	});
@@ -85,7 +85,7 @@ func (c *controller) __decodeJWTToken(token_string string) string {
 	return err.Error()
 }
 
-func (c *controller) __verifyJWTToken(token_string string) bool {
+func (c *user_controller) __verifyJWTToken(token_string string) bool {
     _, err := jwt.ParseWithClaims(token_string, &jwt_claims{}, func(token *jwt.Token) (interface{}, error) {
 		// TODO: get usage information here
         return []byte(TokenInfo[JwtSecret]), nil // secret key inserted here
@@ -96,7 +96,7 @@ func (c *controller) __verifyJWTToken(token_string string) bool {
 
 
 // POST - /auth/login - Login Handler
-func (c *controller) Login(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) Login(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -147,7 +147,7 @@ func (c *controller) Login(w http.ResponseWriter, req *http.Request) {
 
 
 // POST - /auth/register - Register Handler
-func (c *controller) Register(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) Register(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -164,7 +164,7 @@ func (c *controller) Register(w http.ResponseWriter, req *http.Request) {
 }
 
 // POST - /auth/access-token - Create new access token
-func (c *controller) NewAccessToken(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) NewAccessToken(w http.ResponseWriter, req *http.Request) {
 	deviceIdentifier := req.Header.Get("deviceIdentifier")
 	authHeader := req.Header.Get("Authorization")
 	if authHeader == "" {
@@ -203,7 +203,7 @@ func (c *controller) NewAccessToken(w http.ResponseWriter, req *http.Request) {
 }
 
 // POST - /auth/verify-email-request - Emails a link that verifies the email
-func (c *controller) VerifyEmailRequest(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) VerifyEmailRequest(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -227,7 +227,7 @@ func (c *controller) VerifyEmailRequest(w http.ResponseWriter, req *http.Request
 }
 
 // GET - /auth/verify-email/:token - Verifies user's email
-func (c *controller) VerifyEmail(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) VerifyEmail(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -249,7 +249,7 @@ func (c *controller) VerifyEmail(w http.ResponseWriter, req *http.Request) {
 
 
 // POST - /auth/forget-password - Forget Password Handler
-func (c *controller) ForgetPassword(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) ForgetPassword(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -268,7 +268,7 @@ func (c *controller) ForgetPassword(w http.ResponseWriter, req *http.Request) {
 }
 
 // POST - /reset-password/:token - Reset Password Handler
-func (c *controller) ResetForgettedPassword(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) ResetForgettedPassword(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -290,7 +290,7 @@ func (c *controller) ResetForgettedPassword(w http.ResponseWriter, req *http.Req
 
 
 // PUT - /change-password/:id - Change Password Handler
-func (c *controller) ChangePassword(w http.ResponseWriter, req *http.Request) {
+func (c *user_controller) ChangePassword(w http.ResponseWriter, req *http.Request) {
 	var __id user_identifiers;
 	c.__parse_json_id(req, &__id);
 

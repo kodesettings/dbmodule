@@ -17,13 +17,13 @@ type ak_identifiers struct {
 	status uint16 `json:"status"`
 }
 
-type controller struct {
+type ak_controller struct {
 	api_error ApiError;
 	api_response ApiResponse;
 	handler database_repository.ApiKeyRepo
 }
 
-func (c *controller) __parse_json_model(req *http.Request, apiKey *database_model.ApiKey) {
+func (c *ak_controller) __parse_json_model(req *http.Request, apiKey *database_model.ApiKey) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -33,7 +33,7 @@ func (c *controller) __parse_json_model(req *http.Request, apiKey *database_mode
 	json.Unmarshal([]byte(b), &apiKey)
 }
 
-func (c *controller) __parse_json_id(req *http.Request, id *ak_identifiers) {
+func (c *ak_controller) __parse_json_id(req *http.Request, id *ak_identifiers) {
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
 		c.api_error.InternalError(err.Error())
@@ -44,7 +44,7 @@ func (c *controller) __parse_json_id(req *http.Request, id *ak_identifiers) {
 }
 
 // GET - /apikey/find-all
-func (c *controller) FindAll(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) FindAll(w http.ResponseWriter, req *http.Request) {
 	var apiKeys []database_model.ApiKey = c.handler.FindAll();
 	obj, err := json.Marshal(apiKeys);
 
@@ -56,7 +56,7 @@ func (c *controller) FindAll(w http.ResponseWriter, req *http.Request) {
 }
 
 // POST - /apikey/create
-func (c *controller) Create(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) Create(w http.ResponseWriter, req *http.Request) {
 	var apiKey database_model.ApiKey
 	c.__parse_json_model(req, &apiKey)
 
@@ -76,7 +76,7 @@ func (c *controller) Create(w http.ResponseWriter, req *http.Request) {
 }
 
 // PUT - /apikey/update
-func (c *controller) Update(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) Update(w http.ResponseWriter, req *http.Request) {
 	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -107,7 +107,7 @@ func (c *controller) Update(w http.ResponseWriter, req *http.Request) {
 }
 
 // DELETE - /apikey/remove
-func (c *controller) Remove(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) Remove(w http.ResponseWriter, req *http.Request) {
 	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -124,7 +124,7 @@ func (c *controller) Remove(w http.ResponseWriter, req *http.Request) {
 }
 
 // GET - /apikey/find-by-id
-func (c *controller) FindById(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) FindById(w http.ResponseWriter, req *http.Request) {
 	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
@@ -135,7 +135,7 @@ func (c *controller) FindById(w http.ResponseWriter, req *http.Request) {
 }
 
 // GET - /apikey/find-by-id
-func (c *controller) FindByKey(w http.ResponseWriter, req *http.Request) {
+func (c *ak_controller) FindByKey(w http.ResponseWriter, req *http.Request) {
 	var __id ak_identifiers;
 	c.__parse_json_id(req, &__id);
 
