@@ -11,8 +11,10 @@ type ApiResponse struct {
 	headers    HeaderFields
 }
 
-type ResponseStatus int
+type ResponseStatus int32
 type HeaderFields map[string]string
+
+type __resphandle func()
 
 var StatusCode = map[ResponseStatus]string{
 	STATUS_SUCCESS: "10000",
@@ -63,42 +65,42 @@ func (a *ApiResponse) send(apiResponse ApiResponse, headers HeaderFields) string
 	return prepare(*a)
 }
 
-func (a *ApiResponse) AuthFailureResponse(message string) func() {
+func (a *ApiResponse) AuthFailureResponse(message string) __resphandle {
 	if (message == "") { a.message = "Authentication Failure" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
 	a.status = HTTP_UNAUTHORIZED
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) NotFoundResponse(message string) func() {
+func (a *ApiResponse) NotFoundResponse(message string) __resphandle {
 	if (message == "") { a.message = "Not Found" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
 	a.status = HTTP_NOT_FOUND
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) ForbiddenResponse(message string) func() {
+func (a *ApiResponse) ForbiddenResponse(message string) __resphandle {
 	if (message == "") { a.message = "Forbidden" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
 	a.status = HTTP_FORBIDDEN
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) BadRequestResponse(message string) func() {
+func (a *ApiResponse) BadRequestResponse(message string) __resphandle {
 	if (message == "") { a.message = "Bad Parameters" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
 	a.status = HTTP_BAD_REQUEST
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) InternalErrorResponse(message string) func() {
+func (a *ApiResponse) InternalErrorResponse(message string) __resphandle {
 	if (message == "") { a.message = "Internal Error" }
 	a.statusCode = StatusCode[STATUS_FAILURE]
 	a.status = HTTP_INTERNAL_ERROR
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) SuccessResponse(data any) func() {
+func (a *ApiResponse) SuccessResponse(data any) __resphandle {
 	a.message = "Success"
 	a.data = data
 	a.statusCode = StatusCode[STATUS_SUCCESS]
@@ -106,7 +108,7 @@ func (a *ApiResponse) SuccessResponse(data any) func() {
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) AccessTokenErrorResponse(data any) func() {
+func (a *ApiResponse) AccessTokenErrorResponse(data any) __resphandle {
 	a.message = "Access token invalid"
 
 	var instruction string = "refresh_token"
@@ -117,7 +119,7 @@ func (a *ApiResponse) AccessTokenErrorResponse(data any) func() {
 	return func() { a.send(*a, a.headers) }
 }
 
-func (a *ApiResponse) TokenRefreshResponse(accessToken string, refreshToken string) func() {
+func (a *ApiResponse) TokenRefreshResponse(accessToken string, refreshToken string) __resphandle {
 	a.message = "Access token invalid"
 	a.statusCode = StatusCode[STATUS_SUCCESS]
 	a.status = HTTP_SUCCESS
