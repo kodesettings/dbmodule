@@ -3,7 +3,6 @@ package database_model
 
 import (
 	"time"
-	. "github.com/kodesettings/dbmodule/v2/internal/core"
 	. "github.com/kodesettings/dbmodule/v2/internal/config"
 )
 
@@ -31,14 +30,11 @@ type ApiKey struct {
 	UpdatedAt    uint64 `json:"updatedAt"`
 }
 
-type ak_model struct {
-	api_error ApiError;
-	handler ApiKeyRepo;
-}
+func CreateSuperAdminApiKey() bool {
+	var handler ApiKeyRepo;
 
-func (c *ak_model) CreateSuperAdminApiKey() bool {
 	// check if there are any documents in the collection
-	var apiKeys []ApiKey = c.handler.FindAll();
+	var apiKeys []ApiKey = handler.FindAll();
 
 	if len(apiKeys) != 0 {
 		return true;
@@ -55,5 +51,5 @@ func (c *ak_model) CreateSuperAdminApiKey() bool {
 	};
 
 	// save the default document
-	return c.handler.Create(apiKey);
+	return handler.Create(apiKey);
 }
