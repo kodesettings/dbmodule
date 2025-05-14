@@ -33,26 +33,27 @@ type ApiKey struct {
 
 type ak_model struct {
 	api_error ApiError;
-	handler ApiKeyRepo
+	handler ApiKeyRepo;
 }
 
-func (c *ak_model) CreateSuperAdminApiKey() {
+func (c *ak_model) CreateSuperAdminApiKey() bool {
 	// check if there are any documents in the collection
 	var apiKeys []ApiKey = c.handler.FindAll();
 
-	// if no documents exist, add a default document
-	if len(apiKeys) == 0 {
-		var apiKey = ApiKey{
-			Id: 0,
-			Key: SuperAdminApiKey,
-			Permissions: PERMISSION_SUPER_ADMIN,
-			Status: STATUS_ACTIVE,
-			CreatedAt: uint64(time.Now().Unix()),
-			UpdatedAt: uint64(time.Now().Unix()),
-		};
-
-		// save the default document
-		var success bool = c.handler.Create(apiKey);
-		if !success { c.api_error.InternalError("database problem"); }
+	if len(apiKeys) != 0 {
+		return true;
 	}
+
+	// if no documents exist, add a default document
+	var apiKey = ApiKey{
+		Id: 0,
+		Key: SuperAdminApiKey,
+		Permissions: PERMISSION_SUPER_ADMIN,
+		Status: STATUS_ACTIVE,
+		CreatedAt: uint64(time.Now().Unix()),
+		UpdatedAt: uint64(time.Now().Unix()),
+	};
+
+	// save the default document
+	return c.handler.Create(apiKey);
 }
