@@ -1,6 +1,17 @@
 //go:build js && wasm
 package database_model
 
+import (
+	"time"
+	. "github.com/kodesettings/dbmodule/v2/internal/core"
+	. "github.com/kodesettings/dbmodule/v2/internal/config"
+)
+
+type ApiKeyRepo interface {
+	FindAll() []ApiKey
+	Create(api_key ApiKey) bool
+}
+
 const (
 	PERMISSION_GENERAL = "GENERAL"
 	PERMISSION_SUPER_ADMIN = "SUPER_ADMIN"
@@ -20,27 +31,28 @@ type ApiKey struct {
 	UpdatedAt    uint64 `json:"updatedAt"`
 }
 
-func CreateSuperAdminApiKey() {}
-
-/*
-export async function createSuperAdminApiKey() {
-  // Check if there are any documents in the collection
-  const count = ApiKeyModel.All.length;
-
-  // If no documents exist, add a default document
-  if (count === 0) {
-    const defaultDocument: ApiKey = {
-      _id: 0,
-      key: `${superAdminApiKey}`,
-      permissions: Permission.SUPER_ADMIN,
-      status: Status.ACTIVE,
-      createdAt: new Date().toString(),
-      updatedAt: new Date().toString(),
-    };
-
-    // Save the default document
-    const result = ApiKeyModel.InsertOne(defaultDocument);
-    if (!(await result).success) throw new InternalError((await result).error);
-  }
+type ak_model struct {
+	api_error ApiError;
+	handler ApiKeyRepo
 }
-*/
+
+func (c *ak_model) CreateSuperAdminApiKey() {
+	// check if there are any documents in the collection
+	var apiKeys []ApiKey = c.handler.FindAll();
+
+	// if no documents exist, add a default document
+	if len(apiKeys) == 0 {
+		var apiKey = ApiKey{
+			Id: 0,
+			Key: SuperAdminApiKey,
+			Permissions: PERMISSION_SUPER_ADMIN,
+			Status: STATUS_ACTIVE,
+			CreatedAt: uint64(time.Now().Unix()),
+			UpdatedAt: uint64(time.Now().Unix()),
+		};
+
+		// save the default document
+		var success bool = c.handler.Create(apiKey);
+		if !success { c.api_error.InternalError("database problem"); }
+	}
+}
