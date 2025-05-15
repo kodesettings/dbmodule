@@ -1,4 +1,4 @@
-## ChangeLog
+ChangeLog
 =============================================================================
 Here are the applied changes that were done during the development cycles.
 
@@ -9,6 +9,7 @@ Here are the applied changes that were done during the development cycles.
 - Added smtp email handling service for cloudflare's email service
 
 !! Earlier history before language transition
+!! Language transition was based on previous refactorings detailed below
 
 <<< Repository version 0.1.3
 
