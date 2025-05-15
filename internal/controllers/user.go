@@ -168,9 +168,8 @@ func (c *user_controller) NewAccessToken(w http.ResponseWriter, req *http.Reques
 	deviceIdentifier := req.Header.Get("deviceIdentifier")
 	authHeader := req.Header.Get("Authorization")
 	if authHeader == "" {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.BadRequestError("no authorization token provided")
-		return
+		c.api_error.BadRequestError("no authorization token provided")
+		return;
 	}
 
 	var token string = authHeader[:7]; // remove Bearer prefix from token
