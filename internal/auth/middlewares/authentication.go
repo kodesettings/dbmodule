@@ -12,11 +12,16 @@ type authentication struct {
 	authentication _authentication `json:"auth"`
 }
 
+type authentication_controller struct {
+	api_error      ApiError
+	api_response   ApiResponse
+}
+
 type _authentication struct {
 	device_identifier string `json:"deviceIdentifier"`
 }
 
-func (a *authentication) __decodeJWTToken(token_string string) string {
+func (a *authentication_controller) __decodeJWTToken(token_string string) string {
 	_, err := jwt.Parse(token_string, func(token *jwt.Token) (interface{}, error) {
 		return token, nil
 	});
@@ -24,24 +29,23 @@ func (a *authentication) __decodeJWTToken(token_string string) string {
 	return err.Error()
 }
 
-func (a *authentication) AuthenticationValidator(w http.ResponseWriter, req *http.Request) {
+func (a *authentication_controller) AuthenticationValidator(w http.ResponseWriter, req *http.Request) {
 	deviceIdentifier := req.Header.Get("deviceIdentifier")
 	authHeader := req.Header.Get("Authorization")
 	if authHeader == "" {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.BadRequestError("no authorization token provided")
+		a.api_error.BadRequestError("no authorization token provided")
 		return
 	}
 
 	var token string = authHeader[:7]; // remove Bearer prefix from token
 	var decodedToken string = a.__decodeJWTToken(token);
 
-	if decodedToken == "" { c := ApiError{}; c.BadRequestError("invalid tokn"); return; }
+	if decodedToken == "" { a.api_error.BadRequestError("invalid tokn"); return; }
 
 	handler := database_repository.RefreshTokenRepo{}
 	_, isUserLoggedIn := handler.FindByDeviceIdentifier(deviceIdentifier);
 
-	if !isUserLoggedIn { c:= ApiError{}; c.InternalError("login again"); return; }
+	if !isUserLoggedIn { a.api_error.InternalError("login again"); return; }
 /*
     if (decodedToken.usage === "auth-access") {
       const finalDecodedToken = jwt.verify(

@@ -15,12 +15,16 @@ type authorization struct {
 	userId string `json:"userId"`
 }
 
-func (a *authorization) __getUserId(req *http.Request) uint64 {
+type authorization_controller struct {
+	api_error      ApiError
+	api_response   ApiResponse
+}
+
+func (a *authorization_controller) __getUserId(req *http.Request) uint64 {
 	user := database_model.User{}
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.InternalError(err.Error())
+		a.api_error.InternalError(err.Error())
 		return 0
 	}
 
@@ -28,14 +32,13 @@ func (a *authorization) __getUserId(req *http.Request) uint64 {
 	return user.Id
 }
 
-func (a *authorization) AuthorizationValidator(w http.ResponseWriter, req *http.Request) {
+func (a *authorization_controller) AuthorizationValidator(w http.ResponseWriter, req *http.Request) {
 	var userId uint64 = a.__getUserId(req);
 
 	handler := database_repository.UserRepo{}
 	user, found := handler.FindById(userId);
 	if !found {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.ForbiddenError("cannot find user id")
+		a.api_error.ForbiddenError("cannot find user id")
 		return
 	}
 
@@ -54,10 +57,8 @@ role_check:
 	}
 
 	if hasRequiredRoles {
-		r := ApiResponse{};
-		r.SuccessResponse("authorized");
+		a.api_response.SuccessResponse("authorized");
 	} else {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.BadRequestError("permission error - don't have enough roles")
+		a.api_error.BadRequestError("permission error - don't have enough roles")
 	}
 }

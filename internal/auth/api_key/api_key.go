@@ -14,6 +14,11 @@ type apikey struct {
 	authentication _authentication `json:"auth"`
 }
 
+type apikey_controller struct {
+	api_error      ApiError
+	api_response   ApiResponse
+}
+
 type _apiKey struct {
 	x_api_key string `json:"x-api-key"`
 }
@@ -22,13 +27,11 @@ type _authentication struct {
 	device_identifier string `json:"deviceIdentifier"`
 }
 
-
-func (a *apikey) SuperAdminApiKeyCheck(w http.ResponseWriter, req *http.Request) {
+func (a *apikey_controller) SuperAdminApiKeyCheck(w http.ResponseWriter, req *http.Request) {
 	apiKey := apikey{}
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.InternalError(err.Error())
+		a.api_error.InternalError(err.Error())
 		return
 	}
 
@@ -42,19 +45,17 @@ func (a *apikey) SuperAdminApiKeyCheck(w http.ResponseWriter, req *http.Request)
 	}
 }
 
-func (a *apikey) ApiKeyCheck(w http.ResponseWriter, req *http.Request) {
+func (a *apikey_controller) ApiKeyCheck(w http.ResponseWriter, req *http.Request) {
 	key := req.Header.Get("x-api-key")
 	if key == "" {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.ForbiddenError("api key was not found")
+		a.api_error.ForbiddenError("api key was not found")
 		return
 	}
 
 	handler := database_repository.ApiKeyRepo{}
 	_, found := handler.FindByKey(key);
 	if !found {
-		c := ApiError{/*empty struct, it is assigned in function call*/}
-		c.ForbiddenError("no api key was found")
+		a.api_error.ForbiddenError("no api key was found")
 		return
 	}
 
@@ -62,8 +63,7 @@ func (a *apikey) ApiKeyCheck(w http.ResponseWriter, req *http.Request) {
 	permission := false
 
 	if !permission {
-		r := ApiResponse{}
-		r.ForbiddenResponse("Permission Denied");
+		a.api_response.ForbiddenResponse("Permission Denied");
 	}
 
 	// const exists = apiKey?.permissions.includes(Permission.GENERAL, 0);
