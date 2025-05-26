@@ -25,7 +25,7 @@ public:
   ApiResponse() {}
   ApiResponse(StatusCode statusCode, ResponseStatus responseStatus, const std::string &message) :
     statusCode_(statusCode), responseStatus_(responseStatus), message_(message) {}
-private:
+public:
   std::string prepare() {
     char str[2000];
     sprintf(str, "{\"status\": \"%d\", \"statusText:\", \"%s\", \"headers:\" \"%s\"}", statusCode_, message_.c_str(), "{}");
@@ -72,9 +72,11 @@ public:
   }
 };
 
+template<typename T>
 class SuccessResponse: public ApiResponse {
 public:
-  SuccessResponse(const std::string &message) {
+  SuccessResponse(const std::string &message, T payload) {
+    // TODO: handling template payload
     ApiResponse(StatusCode::STATUS_SUCCESS, ResponseStatus::HTTP_SUCCESS, message);
   }
 };

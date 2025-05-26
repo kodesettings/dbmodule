@@ -17,7 +17,7 @@
 
 typedef const std::string ERRTYPE;
 
-class ApiError {
+class ApiError: public ApiResponse {
 public:
   ApiError() {/* default constructor */}
   ApiError(ERRTYPE type, std::string message = "error") {}
