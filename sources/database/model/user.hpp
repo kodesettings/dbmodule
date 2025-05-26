@@ -44,4 +44,33 @@ User savePassword(User user) {
   return user;
 }
 
+namespace boost::json {
+  void tag_invoke(value_from_tag, value& jv, const User &user) {
+    jv = {
+      {"id", user._id},
+      {"fullname", user.fullname},
+      {"email", user.email},
+      {"password", user.password},
+      {"isEmailVerified", user.isEmailVerified},
+      {"roles", value_from(user.roles)},
+      {"createdAt", user.createdAt},
+      {"updatedAt", user.updatedAt}
+    };
+  }
+
+  User tag_invoke(value_to_tag<User>, const value& jv) {
+    const object& obj = jv.as_object();
+    return User{
+      value_to<uint64>(obj.at("id")),
+      value_to<std::string>(obj.at("fullname")),
+      value_to<std::string>(obj.at("email")),
+      value_to<std::string>(obj.at("password")),
+      value_to<bool>(obj.at("isEmailVerified")),
+      value_to<std::vector<std::string>>(obj.at("roles")),
+      value_to<uint64>(obj.at("createdAt")),
+      value_to<uint64>(obj.at("updatedAt"))
+    };
+  }
+}
+
 #endif // DATABASE_MODEL_USER_H

@@ -30,4 +30,29 @@ std::string decrypt(const std::string &value) {
   return "";
 }
 
+namespace boost::json {
+  void tag_invoke(value_from_tag, value& jv, const RefreshToken &refreshToken) {
+    jv = {
+      {"id", refreshToken._id},
+      {"user", refreshToken.user},
+      {"token", refreshToken.token},
+      {"deviceIdentifier", refreshToken.deviceIdentifier},
+      {"createdAt", refreshToken.createdAt},
+      {"expiresAt", refreshToken.expiresAt}
+    };
+  }
+
+  RefreshToken tag_invoke(value_to_tag<RefreshToken>, const value& jv) {
+    const object& obj = jv.as_object();
+    return RefreshToken{
+      value_to<uint64>(obj.at("id")),
+      value_to<std::string>(obj.at("user")),
+      value_to<std::string>(obj.at("token")),
+      value_to<std::string>(obj.at("deviceIdentifier")),
+      value_to<uint64>(obj.at("createdAt")),
+      value_to<uint64>(obj.at("expiresAt"))
+    };
+  }
+}
+
 #endif // DATABASE_MODEL_REFRESH_TOKEN_H

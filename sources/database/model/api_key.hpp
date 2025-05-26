@@ -49,4 +49,29 @@ bool createSuperAdminApiKey(void) {
   return createApiKey(apiKey);
 }
 
+namespace boost::json {
+  void tag_invoke(value_from_tag, value& jv, const ApiKey &apiKey) {
+    jv = {
+      {"id", apiKey._id},
+      {"key", apiKey.key},
+      {"permissions", value_from(apiKey.permissions)},
+      {"status", apiKey.status},
+      {"createdAt", apiKey.createdAt},
+      {"updatedAt", apiKey.updatedAt}
+    };
+  }
+
+  ApiKey tag_invoke(value_to_tag<ApiKey>, const value& jv) {
+    const object& obj = jv.as_object();
+    return ApiKey{
+      value_to<uint64>(obj.at("id")),
+      value_to<std::string>(obj.at("key")),
+      value_to<std::vector<std::string>>(obj.at("permissions")),
+      value_to<uint16>(obj.at("status")),
+      value_to<uint64>(obj.at("createdAt")),
+      value_to<uint64>(obj.at("updatedAt"))
+    };
+  }
+}
+
 #endif // DATABASE_MODEL_API_KEY_H
