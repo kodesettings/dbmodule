@@ -75,7 +75,7 @@ public:
 template<typename T>
 class SuccessResponse: public ApiResponse {
 public:
-  SuccessResponse(const std::string &message, T payload) {
+  SuccessResponse(const std::string &message, T payload...) {
     // TODO: handling template payload
     ApiResponse(StatusCode::STATUS_SUCCESS, ResponseStatus::HTTP_SUCCESS, message);
   }
