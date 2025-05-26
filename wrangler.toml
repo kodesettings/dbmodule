@@ -1,0 +1,13 @@
+compatibility_flags = [ "nodejs_compat" ]
+compatibility_date = "2025-04-02"
+
+name = "dbmodule"
+main = "server/worker.js"
+
+[[d1_databases]]
+binding = "DB" # available in your Worker on env.DB
+database_name = "prod-d1-tutorial"
+database_id = "098d364c-998d-4822-94b0-36741eaae56c"
+
+[vars]
+ENVIRONMENT = "dev"

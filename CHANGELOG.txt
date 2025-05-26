@@ -1,0 +1,42 @@
+ChangeLog
+=============================================================================
+Here are the applied changes that were done during the development cycles.
+
+<<< Repository version 0.1.5
+
+- Modified configuration files for cloudflare workers deployments
+- WIP: Translating all implementation to c++11/14 standard
+
+<<< Repository version 0.1.4
+
+- Added new required configurations for cloudflare workers deployments
+- Re-implemented all logic and sources from reference repository in Go language
+- Added smtp email handling service for cloudflare's email service
+
+<<< Repository version 0.1.3
+
+- Refactored database repository handlers and fixed most of the data structures
+- Updated bcrypt to bcryptjs due to compatibility issues with dependencies
+- Resolved all dependencies for Cloudflare workers deployments in package.json
+- Updated environment variables to use the wrangler cli generated definition file
+- Removed mimetext dependency and using plain text for email body constuction
+- Added vitest modules for unit testing against cloudflare workers fetch API
+
+<<< Repository version 0.1.2
+
+- Refactored controllers to use native nodejs API instead of express
+- Fixed typos in the project and in project file names from original author
+- Added new email handler methods to use Cloufdlare's email service
+- Updated encryption and decryption routines for native nodejs API
+- Refactored schemas across the project for GraphQL validation
+- Updated the routing map of the application from formerly used Express.js
+- Removed redis cache implementation in favor of cloudflare workers kv
+- Updated database implementation to use cloudflare d1 instead of mongodb
+
+<<< Repository version being imported and modified from original GitHub
+
+- Project was now refactored to use package @tsndr/cloudflare-worker-router
+- Docker and Express.js was removed from support, following Redis and MongoDB.
+- Folder structure was redesigned and sources were formatted.
+- package.json file was also modified and new tsconfig.js was generated
+- Added wrangler.toml for deployment allowing nodejs compatibility flags

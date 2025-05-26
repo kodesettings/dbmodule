@@ -1,0 +1,14 @@
+{
+	"name": "dbmodule",
+	"version": "0.1.5",
+	"private": true,
+	"scripts": {
+		"build": "mkdir -p build/ && cd build/ && emcmake cmake ../ && make",
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev"
+	},
+	"devDependencies": {
+		"wrangler": "^4.14.1"
+	}
+}
