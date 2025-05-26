@@ -5,6 +5,3 @@ package-lock.json
 
 # wrangler cli files to be ignored
 .wrangler/
-
-# ignoring submodule files
-jwt-cpp/
