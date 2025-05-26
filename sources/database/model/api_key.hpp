@@ -15,7 +15,7 @@ enum Status {
 struct ApiKey {
   uint64 _id;
   std::string key;
-  std::string permissions[2];
+  std::vector<std::string> permissions;
   uint16 status;
   uint64 createdAt;
   uint64 updatedAt;
@@ -39,7 +39,7 @@ bool createSuperAdminApiKey(void) {
   auto apiKey = ApiKey{
     _id: 0,
     key: SUPER_ADMIN_API_KEY,
-    permissions: PERMISSION_SUPER_ADMIN,
+    permissions: {PERMISSION_SUPER_ADMIN},
     status: STATUS_ACTIVE,
     createdAt: 0, // TODO: add timestamp from helper method
     updatedAt: 0  // TODO: add timestamp from helper method

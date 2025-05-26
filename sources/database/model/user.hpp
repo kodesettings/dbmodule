@@ -25,7 +25,7 @@ struct User {
   std::string email;
   std::string password;
   bool isEmailVerified;
-  Role roles[3];
+  std::vector<std::string> roles;
   uint64 createdAt;
   uint64 updatedAt;
 };

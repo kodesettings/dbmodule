@@ -5,6 +5,7 @@
 #include <chrono>
 #include <array>
 #include <boost/json.hpp>
+#include <vector>
 
 typedef unsigned long uint64;
 typedef unsigned short uint16;

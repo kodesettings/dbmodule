@@ -1,4 +1,7 @@
-#include <string>
+#ifndef HELPERS_MIMECONTENT_H
+#define HELPERS_MIMECONTENT_H
+
+#include "context.hpp"
 
 std::string mimeTextBuilder(std::string email_r, std::string fullname_r, std::string email_s, std::string fullname_s, std::string subject, std::string body) {
   std::string email_sender,email_recipient, email_subject, email_body;
@@ -15,3 +18,5 @@ std::string mimeTextBuilder(std::string email_r, std::string fullname_r, std::st
 
   return std::string(mime_content_text);
 }
+
+#endif // HELPERS_MIMECONTENT_H
