@@ -13,4 +13,4 @@
 } \
 "
 
-#endif // AUTH_MIDDLEWARES_SCHEMA
+#endif // AUTH_MIDDLEWARES_H
