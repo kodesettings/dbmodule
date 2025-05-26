@@ -44,7 +44,8 @@ User savePassword(User user) {
   return user;
 }
 
-namespace boost::json {
+namespace boost {
+namespace json {
   void tag_invoke(value_from_tag, value& jv, const User &user) {
     jv = {
       {"id", user._id},
@@ -71,6 +72,7 @@ namespace boost::json {
       value_to<uint64>(obj.at("updatedAt"))
     };
   }
+}
 }
 
 #endif // DATABASE_MODEL_USER_H

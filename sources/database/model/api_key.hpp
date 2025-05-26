@@ -37,19 +37,20 @@ bool createSuperAdminApiKey(void) {
   }
 
   auto apiKey = ApiKey{
-    _id: 0,
-    key: SUPER_ADMIN_API_KEY,
-    permissions: {PERMISSION_SUPER_ADMIN},
-    status: STATUS_ACTIVE,
-    createdAt: 0, // TODO: add timestamp from helper method
-    updatedAt: 0  // TODO: add timestamp from helper method
+    ._id = 0,
+    .key = SUPER_ADMIN_API_KEY,
+    .permissions = {PERMISSION_SUPER_ADMIN},
+    .status = STATUS_ACTIVE,
+    .createdAt = 0, // TODO: add timestamp from helper method
+    .updatedAt = 0  // TODO: add timestamp from helper method
   };
 
   // save the default document
   return createApiKey(apiKey);
 }
 
-namespace boost::json {
+namespace boost {
+namespace json {
   void tag_invoke(value_from_tag, value& jv, const ApiKey &apiKey) {
     jv = {
       {"id", apiKey._id},
@@ -72,6 +73,7 @@ namespace boost::json {
       value_to<uint64>(obj.at("updatedAt"))
     };
   }
+}
 }
 
 #endif // DATABASE_MODEL_API_KEY_H

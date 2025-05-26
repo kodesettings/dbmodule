@@ -23,12 +23,12 @@ public:
   ApiError(ERRTYPE type, std::string message = "error") {}
 
   static void handle(const std::string &err) {
-    if (err == UNAUTHORIZED) { AuthFailureResponse(err); return; }
-    if (err == ACCESS_TOKEN) { AccessTokenErrorResponse(err); return; }
-    if (err == INTERNAL_ERROR) { InternalErrorResponse(err); return; }
-    if (err == NO_DATA) { NotFoundResponse(err); return; }
-    if (err == BAD_REQUEST) { BadRequestResponse(err); return; }
-    if (err == FORBIDDEN) { ForbiddenResponse(err); return; }
+    if (err == UNAUTHORIZED) { AuthFailureResponse(err).prepare(); return; }
+    if (err == ACCESS_TOKEN) { AccessTokenErrorResponse(err).prepare(); return; }
+    if (err == INTERNAL_ERROR) { InternalErrorResponse(err).prepare(); return; }
+    if (err == NO_DATA) { NotFoundResponse(err).prepare(); return; }
+    if (err == BAD_REQUEST) { BadRequestResponse(err).prepare(); return; }
+    if (err == FORBIDDEN) { ForbiddenResponse(err).prepare(); return; }
 default_error:
     // Do not send failure message in production as it may send sensitive data
     // if (environment === "production") message = "Something wrong happened.";

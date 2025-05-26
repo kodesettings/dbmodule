@@ -30,7 +30,8 @@ std::string decrypt(const std::string &value) {
   return "";
 }
 
-namespace boost::json {
+namespace boost {
+namespace json {
   void tag_invoke(value_from_tag, value& jv, const RefreshToken &refreshToken) {
     jv = {
       {"id", refreshToken._id},
@@ -53,6 +54,7 @@ namespace boost::json {
       value_to<uint64>(obj.at("expiresAt"))
     };
   }
+}
 }
 
 #endif // DATABASE_MODEL_REFRESH_TOKEN_H
