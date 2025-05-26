@@ -1,3 +1,6 @@
+#ifndef CORE_API_ERROR_H
+#define CORE_API_ERROR_H
+
 #include "../config/env_configs.hpp"
 #include "api_response.hpp"
 
@@ -102,3 +105,5 @@ public:
     ApiError(ACCESS_TOKEN, message);
   }
 };
+
+#endif // CORE_API_ERROR_H

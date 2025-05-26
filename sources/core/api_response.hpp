@@ -1,3 +1,6 @@
+#ifndef CORE_API_RESPONSE_H
+#define CORE_API_RESPONSE_H
+
 // Helper code for the API consumer to understand the error and handle is accordingly
 enum StatusCode {
   STATUS_SUCCESS = 10000,
@@ -89,3 +92,5 @@ public:
     ApiResponse(StatusCode::STATUS_SUCCESS, ResponseStatus::HTTP_SUCCESS, message);
   }
 };
+
+#endif // CORE_API_RESPONSE_H
