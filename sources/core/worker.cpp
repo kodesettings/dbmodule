@@ -16,6 +16,8 @@
 #include "../helpers/mimecontent.hpp"
 #include "../helpers/utils.hpp"
 #include "../helpers/validator.hpp"
+
+#include "../auth/api_key/api_key.cpp"
 // ---
 
 // TODO: add javascript binding functions here
