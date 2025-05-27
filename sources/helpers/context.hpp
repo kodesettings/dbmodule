@@ -7,6 +7,8 @@
 #include <boost/json.hpp>
 #include <vector>
 
+#include "jwt-cpp/jwt.h"
+
 typedef unsigned long uint64;
 typedef unsigned short uint16;
 
