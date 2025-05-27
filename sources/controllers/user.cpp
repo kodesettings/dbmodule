@@ -77,6 +77,30 @@ void login(const std::string req, std::string *resp) {
     return;
   }
 
-  std::string jsonObj; // TODO: return accessToken, refreshToken and userId
+  std::string jsonObj = std::string("{\"accessToken\": \"")
+    .append(accessToken)
+    .append("\", \"refreshToken\": \"")
+    .append(refreshToken)
+    .append("\", \"userId\": \"")
+    .append(std::to_string(user._id))
+    .append("\"");
+
   *resp = SuccessResponse<std::string>("success", jsonObj).prepare();
+}
+
+// POST - /auth/register - Register Handler
+void registering(const std::string req, std::string *resp) {
+  auto user = json_object_to_object<struct User>(req);
+
+  bool isEmailInUse;
+  findUserByEmail(user.email, &isEmailInUse);
+  if (isEmailInUse) { *resp = BadRequestError("Email is Already Taken").prepare(); return; }
+
+  bool success = createUser(user);
+  if (success) {
+    //Send Welcome Email
+    //sendEmail(email, fullname, "Welcome!", "Thank you for chosing us");
+  }
+
+  *resp = SuccessResponse<std::string>("success", "{}").prepare();
 }
