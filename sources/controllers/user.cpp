@@ -24,21 +24,8 @@ void login(const std::string req, std::string *resp) {
     return;
   }
 
-  std::string claim = object_to_json_object<struct JwtToken>(JwtToken{
-    .user = JwtUser{
-      .userId = std::to_string(user._id),
-      .email = user.email,
-      .fullname = user.fullname
-    },
-    .usage = "auth-access"
-  });
-
-  auto accessToken = jwt::create()
-    .set_type("JWS")
-    .set_issuer("auth0")
-    .set_payload_claim("sample", jwt::claim(claim))
-    .set_expires_in(std::chrono::seconds{ACCESS_TOKEN_VALIDITY})
-    .sign(jwt::algorithm::hs256{JWT_SECRET});
+  auto claim = generateClaim(user, "auth-access");
+  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
   bool isRefreshTokenAlreadyCreated;
   auto __refreshToken = findRefreshTokenByDeviceIdentifier(deviceIdentifier, &isRefreshTokenAlreadyCreated);
@@ -46,22 +33,8 @@ void login(const std::string req, std::string *resp) {
     removeRefreshToken(__refreshToken._id);
   }
 
-  claim = object_to_json_object<struct JwtToken>(JwtToken{
-    .user = JwtUser{
-      .userId = std::to_string(user._id),
-      .email = user.email,
-      .fullname = user.fullname
-    },
-    .usage = "auth-refresh"
-  });
-
-  auto refreshToken = jwt::create()
-    .set_type("JWS")
-    .set_issuer("auth0")
-    .set_payload_claim("sample", jwt::claim(claim))
-    .set_expires_in(std::chrono::seconds{REFRESH_TOKEN_VALIDITY})
-    .sign(jwt::algorithm::hs256{JWT_SECRET});
-
+  claim = generateClaim(user, "auth-refresh");
+  auto refreshToken = createJwtToken(claim, REFRESH_TOKEN_VALIDITY);
 
   RefreshToken refreshTokenDBObj{
     ._id = 0,
@@ -142,21 +115,8 @@ void newAccessToken(const std::string req, std::string *resp) {
   bool found;
   User user = findUserById((uint64)std::stoi(id), &found);
 
-  std::string claim = object_to_json_object<struct JwtToken>(JwtToken{
-    .user = JwtUser{
-      .userId = std::to_string(user._id),
-      .email = user.email,
-      .fullname = user.fullname
-    },
-    .usage = "auth-access"
-  });
-
-  auto accessToken = jwt::create()
-    .set_type("JWS")
-    .set_issuer("auth0")
-    .set_payload_claim("sample", jwt::claim(claim))
-    .set_expires_in(std::chrono::seconds{ACCESS_TOKEN_VALIDITY})
-    .sign(jwt::algorithm::hs256{JWT_SECRET});
+  auto claim = generateClaim(user, "auth-access");
+  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
   *resp = SuccessResponse<std::string>("success", accessToken).prepare();
 }
@@ -177,21 +137,8 @@ void verifyEmailRequest(const std::string req, std::string *resp) {
     return;
   }
 
-  std::string claim = object_to_json_object<struct JwtToken>(JwtToken{
-    .user = JwtUser{
-      .userId = std::to_string(user._id),
-      .email = user.email,
-      .fullname = user.fullname
-    },
-    .usage = "emailVerify"
-  });
-
-  auto accessToken = jwt::create()
-    .set_type("JWS")
-    .set_issuer("auth0")
-    .set_payload_claim("sample", jwt::claim(claim))
-    .set_expires_in(std::chrono::seconds{ACCESS_TOKEN_VALIDITY})
-    .sign(jwt::algorithm::hs256{JWT_SECRET});
+  auto claim = generateClaim(user, "emailVerify");
+  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
   std::string verifyLink = "/auth/verify-email/${token}"; // Replace your domain
   std::string emailBody = std::string("<a href=\"").append(verifyLink).append("\">click here for verifying email</a>");
@@ -248,21 +195,8 @@ void forgetPassword(const std::string req, std::string *resp) {
     return;
   }
 
-  std::string claim = object_to_json_object<struct JwtToken>(JwtToken{
-    .user = JwtUser{
-      .userId = std::to_string(user._id),
-      .email = user.email,
-      .fullname = user.fullname
-    },
-    .usage = "forgetPassword"
-  });
-
-  auto accessToken = jwt::create()
-    .set_type("JWS")
-    .set_issuer("auth0")
-    .set_payload_claim("sample", jwt::claim(claim))
-    .set_expires_in(std::chrono::seconds{ACCESS_TOKEN_VALIDITY})
-    .sign(jwt::algorithm::hs256{JWT_SECRET});
+  auto claim = generateClaim(user, "forgetPassword");
+  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
   std::string verifyLink = "/auth/reset-password/${token}"; // Replace your domain
   std::string emailBody = std::string("<a href=\"").append(verifyLink).append("\">click here for changing password</a>");

@@ -65,4 +65,26 @@ static std::string object_to_json_object(T object) {
   return boost::json::serialize(out);
 }
 
+#include "../database/model/user.hpp"
+
+std::string generateClaim(User user, const std::string &usage) {
+  return object_to_json_object<struct JwtToken>(JwtToken{
+    .user = JwtUser{
+      .userId = std::to_string(user._id),
+      .email = user.email,
+      .fullname = user.fullname
+    },
+    .usage = usage
+  });
+}
+
+std::string createJwtToken(std::string claim, uint64 validity) {
+  return jwt::create()
+    .set_type("JWS")
+    .set_issuer("auth0")
+    .set_payload_claim("sample", jwt::claim(claim))
+    .set_expires_in(std::chrono::seconds{validity})
+    .sign(jwt::algorithm::hs256{JWT_SECRET});
+}
+
 #endif // HELPERS_UTILS_H
