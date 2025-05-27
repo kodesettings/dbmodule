@@ -11,6 +11,11 @@
 #include "../database/repository/user.cpp"
 #include "../controllers/api_key.cpp"
 #include "../controllers/user.cpp"
+
+#include "../helpers/context.hpp"
+#include "../helpers/mimecontent.hpp"
+#include "../helpers/utils.hpp"
+#include "../helpers/validator.hpp"
 // ---
 
 // TODO: add javascript binding functions here
