@@ -18,6 +18,8 @@
 #include "../helpers/validator.hpp"
 
 #include "../auth/api_key/api_key.cpp"
+#include "../auth/middlewares/authentication.cpp"
+#include "../auth/middlewares/authorization.cpp"
 // ---
 
 // TODO: add javascript binding functions here
