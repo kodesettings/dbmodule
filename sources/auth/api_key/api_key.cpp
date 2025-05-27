@@ -30,9 +30,11 @@ void apiKeyCheck(const std::string req, std::string *resp) {
     return;
   }
 
-
   auto permissions = apiKey.permissions;
   if (std::find(permissions.begin(), permissions.end(), PERMISSION_GENERAL) != permissions.end()) {
     *resp = ForbiddenError("Permission Denied").prepare();
   }
+
+  // TODO: add this serialized apiKey object into request
+  std::string req_apiKey = object_to_json_object<ApiKey>(apiKey);
 }
