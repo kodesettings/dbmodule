@@ -138,9 +138,9 @@ void verifyEmailRequest(const std::string req, std::string *resp) {
   }
 
   auto claim = generateClaim(user, "emailVerify");
-  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
+  auto token = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
-  std::string verifyLink = "/auth/verify-email/${token}"; // Replace your domain
+  std::string verifyLink = std::string("/auth/verify-email/").append(token); // Replace your domain
   std::string emailBody = std::string("<a href=\"").append(verifyLink).append("\">click here for verifying email</a>");
   std::string mimetext = mimeTextBuilder(user.email, user.fullname, "", "", "verify email", emailBody);
 
@@ -196,9 +196,9 @@ void forgetPassword(const std::string req, std::string *resp) {
   }
 
   auto claim = generateClaim(user, "forgetPassword");
-  auto accessToken = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
+  auto token = createJwtToken(claim, ACCESS_TOKEN_VALIDITY);
 
-  std::string verifyLink = "/auth/reset-password/${token}"; // Replace your domain
+  std::string verifyLink = std::string("/auth/reset-password/").append(token); // Replace your domain
   std::string emailBody = std::string("<a href=\"").append(verifyLink).append("\">click here for changing password</a>");
   std::string mimetext = mimeTextBuilder(user.email, user.fullname, "", "", "forget password", emailBody);
 
