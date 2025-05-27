@@ -94,7 +94,10 @@ void registering(const std::string req, std::string *resp) {
 
   bool isEmailInUse;
   findUserByEmail(user.email, &isEmailInUse);
-  if (isEmailInUse) { *resp = BadRequestError("Email is Already Taken").prepare(); return; }
+  if (isEmailInUse) {
+    *resp = BadRequestError("Email is Already Taken").prepare();
+    return;
+  }
 
   bool success = createUser(user);
   if (success) {
@@ -103,4 +106,57 @@ void registering(const std::string req, std::string *resp) {
   }
 
   *resp = SuccessResponse<std::string>("success", "{}").prepare();
+}
+
+// POST - /auth/access-token - Create new access token
+void newAccessToken(const std::string req, std::string *resp) {
+  std::string deviceIdentifier, authHeader, token;
+
+  auto decodedToken = jwt::decode(token);
+  if (decodedToken.get_payload_json()["usage"].to_str() != "auth-refresh") {
+    *resp = BadRequestError("Token is not defined").prepare();
+    return;
+  }
+
+  bool isUserLoggedIn;
+  findRefreshTokenByDeviceIdentifier(deviceIdentifier, &isUserLoggedIn);
+
+  if (!isUserLoggedIn) {
+    *resp = ForbiddenError("Login Again").prepare();
+    return;
+  }
+
+  try {
+    auto verify = jwt::verify();
+    verify.verify(decodedToken);
+  } catch (...) {
+    bool found;
+     auto refreshToken = findRefreshTokenByDeviceIdentifier(deviceIdentifier, &found);
+    removeRefreshToken(refreshToken._id);
+    *resp = ForbiddenError("Login Again").prepare();
+    return;
+  }
+
+  std::string id = decodedToken.get_payload_json()["user"].get("id").to_str();
+
+  bool found;
+  User user = findUserById((uint64)std::stoi(id), &found);
+
+  std::string claim = object_to_json_object<struct JwtToken>(JwtToken{
+    .user = JwtUser{
+      .userId = std::to_string(user._id),
+      .email = user.email,
+      .fullname = user.fullname
+    },
+    .usage = "auth-access"
+  });
+
+  auto accessToken = jwt::create()
+    .set_type("JWS")
+    .set_issuer("auth0")
+    .set_payload_claim("sample", jwt::claim(claim))
+    .set_expires_in(std::chrono::seconds{ACCESS_TOKEN_VALIDITY})
+    .sign(jwt::algorithm::hs256{JWT_SECRET});
+
+  *resp = SuccessResponse<std::string>("success", accessToken).prepare();
 }
