@@ -1,6 +1,4 @@
-#include "../../database/model/user.hpp"
-#include "../../core/api_error.hpp"
-#include "../../helpers/context.hpp"
+#include "middlewares.hpp"
 
 void authorization(const std::string req, std::string *resp) {
   std::string userId; // TODO: get this from json input

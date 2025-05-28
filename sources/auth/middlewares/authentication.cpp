@@ -1,8 +1,4 @@
-#include "../../database/model/refresh_token.hpp"
-#include "../../core/api_error.hpp"
-#include "../../core/api_response.hpp"
-#include "../../helpers/context.hpp"
-#include "../../helpers/utils.hpp"
+#include "middlewares.hpp"
 
 void authentication(const std::string req, std::string *resp) {
   std::string authHeader, deviceIdentifier; // TODO: get these from header

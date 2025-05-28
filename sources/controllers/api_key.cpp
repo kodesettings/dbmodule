@@ -1,8 +1,4 @@
-#include "../database/model/api_key.hpp"
-#include "../core/api_error.hpp"
-#include "../core/api_response.hpp"
-#include "../helpers/context.hpp"
-#include "../helpers/utils.hpp"
+#include "api_key.hpp"
 
 // GET - /apikey/find-all
 void findAll(const std::string req, std::string *resp) {
