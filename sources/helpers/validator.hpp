@@ -19,7 +19,7 @@ bool isAuthBearer(const std::string &value) {
   return true;
 }
 
-bool jsonSchemaValid(const std::string &schema, const std::string &source, const std::string &req) {
+bool isJsonSchemaValid(const std::string &schema, const std::string &source, const std::string &req) {
   // TODO: validate schema with valijson project
   return true;
 }
