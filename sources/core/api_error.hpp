@@ -1,5 +1,5 @@
-#ifndef CORE_API_ERROR_H
-#define CORE_API_ERROR_H
+#ifndef CORE_API_ERROR_HPP
+#define CORE_API_ERROR_HPP
 
 #include "../config/env_configs.hpp"
 #include "api_response.hpp"
@@ -106,4 +106,4 @@ public:
   }
 };
 
-#endif // CORE_API_ERROR_H
+#endif // CORE_API_ERROR_HPP

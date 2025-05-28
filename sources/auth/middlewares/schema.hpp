@@ -1,5 +1,5 @@
-#ifndef AUTH_MIDDLEWARES_H
-#define AUTH_MIDDLEWARES_H
+#ifndef AUTH_MIDDLEWARES_HPP
+#define AUTH_MIDDLEWARES_HPP
 
 #define AUTH_MIDDLEWARES_SCHEMA " \
 { \
@@ -13,4 +13,4 @@
 } \
 "
 
-#endif // AUTH_MIDDLEWARES_H
+#endif // AUTH_MIDDLEWARES_HPP

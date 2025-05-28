@@ -1,5 +1,5 @@
-#ifndef DATABASE_MODEL_USER_H
-#define DATABASE_MODEL_USER_H
+#ifndef DATABASE_MODEL_USER_HPP
+#define DATABASE_MODEL_USER_HPP
 
 #include "../../config/env_configs.hpp"
 #include "../../helpers/context.hpp"
@@ -75,4 +75,4 @@ namespace json {
 }
 }
 
-#endif // DATABASE_MODEL_USER_H
+#endif // DATABASE_MODEL_USER_HPP

@@ -1,5 +1,5 @@
-#ifndef DATABASE_MODEL_REFRESH_TOKEN_H
-#define DATABASE_MODEL_REFRESH_TOKEN_H
+#ifndef DATABASE_MODEL_REFRESH_TOKEN_HPP
+#define DATABASE_MODEL_REFRESH_TOKEN_HPP
 
 #include "../../config/env_configs.hpp"
 #include "../../helpers/context.hpp"
@@ -57,4 +57,4 @@ namespace json {
 }
 }
 
-#endif // DATABASE_MODEL_REFRESH_TOKEN_H
+#endif // DATABASE_MODEL_REFRESH_TOKEN_HPP

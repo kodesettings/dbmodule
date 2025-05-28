@@ -1,5 +1,5 @@
-#ifndef HELPERS_VALIDATOR_H
-#define HELPERS_VALIDATOR_H
+#ifndef HELPERS_VALIDATOR_HPP
+#define HELPERS_VALIDATOR_HPP
 
 #include "../core/api_error.hpp"
 
@@ -24,4 +24,4 @@ bool jsonSchemaValid(const std::string &schema, const std::string &source, const
   return true;
 }
 
-#endif // HELPERS_VALIDATOR_H
+#endif // HELPERS_VALIDATOR_HPP

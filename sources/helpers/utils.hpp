@@ -1,5 +1,5 @@
-#ifndef HELPERS_UTILS_H
-#define HELPERS_UTILS_H
+#ifndef HELPERS_UTILS_HPP
+#define HELPERS_UTILS_HPP
 
 #include "context.hpp"
 
@@ -87,4 +87,4 @@ std::string createJwtToken(std::string claim, uint64 validity) {
     .sign(jwt::algorithm::hs256{JWT_SECRET});
 }
 
-#endif // HELPERS_UTILS_H
+#endif // HELPERS_UTILS_HPP

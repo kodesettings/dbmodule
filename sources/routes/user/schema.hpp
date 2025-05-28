@@ -1,5 +1,5 @@
-#ifndef ROUTES_USER_H
-#define ROUTES_USER_H
+#ifndef ROUTES_USER_HPP
+#define ROUTES_USER_HPP
 
 #define ROUTES_USER_SCHEMA " \
 { \
@@ -70,4 +70,4 @@
 } \
 "
 
-#endif // ROUTES_USER_H
+#endif // ROUTES_USER_HPP

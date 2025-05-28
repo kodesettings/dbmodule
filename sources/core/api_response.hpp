@@ -1,5 +1,5 @@
-#ifndef CORE_API_RESPONSE_H
-#define CORE_API_RESPONSE_H
+#ifndef CORE_API_RESPONSE_HPP
+#define CORE_API_RESPONSE_HPP
 
 // Helper code for the API consumer to understand the error and handle is accordingly
 enum StatusCode {
@@ -95,4 +95,4 @@ public:
   }
 };
 
-#endif // CORE_API_RESPONSE_H
+#endif // CORE_API_RESPONSE_HPP

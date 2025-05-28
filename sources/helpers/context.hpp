@@ -1,5 +1,5 @@
-#ifndef HELPERS_CONTEXT_H
-#define HELPERS_CONTEXT_H
+#ifndef HELPERS_CONTEXT_HPP
+#define HELPERS_CONTEXT_HPP
 
 #include <string>
 #include <chrono>
@@ -12,4 +12,4 @@
 typedef unsigned long uint64;
 typedef unsigned short uint16;
 
-#endif // HELPERS_CONTEXT_H
+#endif // HELPERS_CONTEXT_HPP

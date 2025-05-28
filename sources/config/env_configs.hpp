@@ -1,5 +1,5 @@
-#ifndef CONFIG_ENV_CONFIGS_H
-#define CONFIG_ENV_CONFIGS_H
+#ifndef CONFIG_ENV_CONFIGS_HPP
+#define CONFIG_ENV_CONFIGS_HPP
 
 /**
  * database variables from wrangler.toml
@@ -27,4 +27,4 @@
 #define ENVIRONMENT "dev"
 #define SUPER_ADMIN_API_KEY "941820ce-39fc-11f0-bb76-2ba6e0b4a99c"
 
-#endif // CONFIG_ENV_CONFIGS_H
+#endif // CONFIG_ENV_CONFIGS_HPP
