@@ -5,7 +5,8 @@ Here are the applied changes that were done during the development cycles.
 <<< Repository version 0.1.5
 
 - Modified configuration files for cloudflare workers deployments
-- WIP: Translating all implementation to c++11/14 standard
+- Translated all implementation to c++11/14 standard using emscripten
+- Added and configured CMakeLists.txt project file
 
 <<< Repository version 0.1.4
 
