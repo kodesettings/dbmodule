@@ -15,7 +15,7 @@ void newAccessToken(const std::string req, std::string *resp);
 void verifyEmailRequest(const std::string req, std::string *resp);
 void verifyEmail(const std::string req, std::string *resp);
 void forgetPassword(const std::string req, std::string *resp);
-void resetForgottedPassword(const std::string req, std::string *resp);
+void resetForgottenPassword(const std::string req, std::string *resp);
 void changePassword(const std::string req, std::string *resp);
 
 #endif // CONTROLLERS_USER_HPP

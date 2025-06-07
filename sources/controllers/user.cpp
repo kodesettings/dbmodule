@@ -202,7 +202,7 @@ void forgetPassword(const std::string req, std::string *resp) {
 }
 
 // POST - /reset-password/:token - Reset Password Handler
-void resetForgottedPassword(const std::string req, std::string *resp) {
+void resetForgottenPassword(const std::string req, std::string *resp) {
   std::string token, password, confirmPassword;
 
   auto decodedToken = jwt::decode(token);
