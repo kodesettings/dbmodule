@@ -3,4 +3,6 @@
 #include "../../auth/api_key/api_key.hpp"
 #include "../../auth/middlewares/middlewares.hpp"
 
+#include "schema.hpp"
+
 // TODO: add routing endpoints using a library

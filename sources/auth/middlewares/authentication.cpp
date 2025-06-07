@@ -1,4 +1,5 @@
 #include "middlewares.hpp"
+#include "schema.hpp"
 
 void authentication(const std::string req, std::string *resp) {
   std::string authHeader, deviceIdentifier; // TODO: get these from header

@@ -14,7 +14,7 @@
         type: \"object\", \
         required: [\"authorization\"], \
         properties: { \
-            deviceIdentifier: { type: \"string\" } \
+            authorization: { type: \"string\" } \
         } \
     } \
 } \
