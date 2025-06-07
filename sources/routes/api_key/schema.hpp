@@ -1,5 +1,5 @@
-#ifndef ROUTES_API_KEY_HPP
-#define ROUTES_API_KEY_HPP
+#ifndef ROUTES_API_KEY_SCHEMA_HPP
+#define ROUTES_API_KEY_SCHEMA_HPP
 
 #define ROUTES_API_KEY_SCHEMA " \
 { \
@@ -38,4 +38,4 @@
 } \
 "
 
-#endif // ROUTES_API_KEY_HPP
+#endif // ROUTES_API_KEY_SCHEMA_HPP

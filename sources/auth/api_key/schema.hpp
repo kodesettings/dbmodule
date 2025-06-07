@@ -1,5 +1,5 @@
-#ifndef AUTH_API_KEY_HPP
-#define AUTH_API_KEY_HPP
+#ifndef AUTH_API_KEY_SCHEMA_HPP
+#define AUTH_API_KEY_SCHEMA_HPP
 
 #define AUTH_API_KEY_SCHEMA " \
 { \
@@ -20,4 +20,4 @@
 } \
 "
 
-#endif // AUTH_API_KEY_HPP
+#endif // AUTH_API_KEY_SCHEMA_HPP
