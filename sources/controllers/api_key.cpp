@@ -24,11 +24,10 @@ void create(const std::string req, std::string *resp) {
   auto result = createApiKey(apiKey);
   if (!result) {
     *resp = InternalError("database problem").prepare();
-    return;
+  } else {
+    std::string jsonObj = object_to_json_object<struct ApiKey>(apiKey);
+    *resp = SuccessResponse<std::string>("success", jsonObj).prepare();
   }
-
-  std::string jsonObj = object_to_json_object<struct ApiKey>(apiKey);
-  *resp = SuccessResponse<std::string>("success", jsonObj).prepare();
 }
 
 // PUT - /apikey/update
@@ -54,11 +53,9 @@ void update(const std::string req, std::string *resp) {
 */
   bool result = updateApiKey(apiKey);
   if (result) {
-    SuccessResponse<struct ApiKey>("success", apiKey).prepare();
-    return;
+    *resp = SuccessResponse<struct ApiKey>("success", apiKey).prepare();
   } else {
-    InternalError("database problem").prepare();
-    return;
+    *resp = InternalError("database problem").prepare();
   }
 }
 
@@ -80,11 +77,9 @@ void remove(const std::string req, std::string *resp) {
 
   bool result = removeApiKey(id);
   if (result) {
-    SuccessResponse<struct ApiKey>("success", apiKey).prepare();
-    return;
+    *resp = SuccessResponse<struct ApiKey>("success", apiKey).prepare();
   } else {
-    InternalError("database problem").prepare();
-    return;
+    *resp = InternalError("database problem").prepare();
   }
 }
 
@@ -101,10 +96,8 @@ void findById(const std::string req, std::string *resp) {
   auto apiKey = findApiKeyById(id, &exist);
   if (!exist) {
     *resp = InternalError("database problem").prepare();
-    return;
   } else {
-    SuccessResponse<struct ApiKey>("success", apiKey).prepare();
-    return;
+    *resp = SuccessResponse<struct ApiKey>("success", apiKey).prepare();
   }
 }
 
@@ -121,9 +114,7 @@ void findByKey(const std::string req, std::string *resp) {
   auto apiKey = findApiKeyByKey(key, &exist);
   if (!exist) {
     *resp = InternalError("database problem").prepare();
-    return;
   } else {
-    SuccessResponse<struct ApiKey>("success", apiKey).prepare();
-    return;
+    *resp = SuccessResponse<struct ApiKey>("success", apiKey).prepare();
   }
 }
