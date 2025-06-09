@@ -9,7 +9,7 @@ void authentication(const std::string req, std::string *resp) {
     return;
   }
 
-  auto token = authHeader.substr(0, 7); // remove Bearer prefix from token
+  auto token = authHeader.substr(7, authHeader.size()); // remove Bearer prefix from token
   auto decodedToken = jwt::decode(token);
 
   if (decodedToken.get_payload_json().empty()) {
