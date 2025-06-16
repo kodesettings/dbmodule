@@ -9,13 +9,13 @@
 #define PARAM "params"
 
 bool isUrlEndPoint(const std::string &url) {
-  if (!url.find("://")) return false;
+  if (url.find("://") != 0) return false;
   return true;
 }
 
 bool isAuthBearer(const std::string &value) {
-  if (!value.substr(0, 7).compare("Bearer ")) return false;
-  if (!value.rfind(" ")) return false;
+  if (value.substr(0, 7).compare("Bearer ") != 0) return false;
+  if (value.rfind(" ") != 0) return false;
   return true;
 }
 
