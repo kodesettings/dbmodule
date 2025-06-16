@@ -35,3 +35,4 @@ add_library(server STATIC
 # this is required for 3rd party dependencies
 # NOTE: set your own path to the folder
 target_include_directories(server PUBLIC "/usr/local/include/")
+target_include_directories(server PUBLIC "/usr/local/include/picojson/")
