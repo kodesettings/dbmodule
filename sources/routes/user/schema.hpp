@@ -50,7 +50,7 @@
             email: { type: \"string\", format: \"email\" } \
         } \
     }, \
-    resetForgettedPassword: { \
+    resetForgottenPassword: { \
         type: \"object\", \
         required: [\"password\", \"confirmPassword\"], \
         properties: { \
