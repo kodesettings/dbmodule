@@ -3,8 +3,8 @@
 
 #include "../core/api_error.hpp"
 
-#include "valijson/adapters/picojson_adapter.hpp"
-#include "valijson/validation_results.hpp"
+#include "valijson/adapters/boost_json_adapter.hpp"
+#include "valijson/schema.hpp"
 #include "valijson/schema_parser.hpp"
 #include "valijson/validator.hpp"
 
@@ -24,33 +24,30 @@ bool isAuthBearer(const std::string &value) {
   return true;
 }
 
-#include "picojson/picojson.h"
-
-picojson::value jsonParse(std::string serialized, picojson::value def) {
-  picojson::value v;
-  std::string err;
-  picojson::parse(v, serialized.data(), serialized.data() + serialized.size(), &err);
-
-  if (!err.empty()) {
-    return def;
+bool isJsonSchemaValid(const std::string &schemaJson, const std::string &source, const std::string &req) {
+  boost::system::error_code ec;
+  auto schemaDoc = boost::json::parse(schemaJson, ec);
+  if (ec) {
+    std::cerr << "Error parsing schema json: " << ec.message() << std::endl;
+    return false;
   }
 
-  return v;
-}
+  valijson::Schema schema;
+  valijson::SchemaParser schemaParser;
 
-bool isJsonSchemaValid(const std::string &schemaStr, const std::string &source, const std::string &req) {
-  auto validatorSchema = std::make_shared<valijson::Schema>();
-  auto schemaJson = jsonParse(schemaStr, picojson::value{});
-  auto schemaAdapter = valijson::adapters::PicoJsonAdapter(schemaJson);
-  valijson::SchemaParser parser;
-  parser.populateSchema(schemaAdapter, *validatorSchema);
+  valijson::adapters::BoostJsonAdapter schemaAdapter(schemaDoc);
+  schemaParser.populateSchema(schemaAdapter, schema);
 
-  auto targetJson = jsonParse(req, picojson::value{});
-  auto targetAdapter = valijson::adapters::PicoJsonAdapter(targetJson);
+  auto targetDoc = boost::json::parse(req, ec);
+  if (ec) {
+    std::cerr << "Error parsing target json: " << ec.message() << std::endl;
+    return false;
+  }
 
+  valijson::Validator validator;
   valijson::ValidationResults results;
-  auto validator = valijson::Validator();
-  return validator.validate(*validatorSchema, targetAdapter, &results);
+  valijson::adapters::BoostJsonAdapter targetAdapter(targetDoc);
+  return validator.validate(schema, targetAdapter, &results);
 }
 
 #endif // HELPERS_VALIDATOR_HPP
